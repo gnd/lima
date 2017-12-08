@@ -57,9 +57,7 @@ else
 
     ### Check if successfull
     CHECK=`virsh list --all|grep $VM_NAME`
-    if [[ -z $CHECK ]]; then
-        echo "$VM_NAME has been stopped."
-    else
+    if [[ ! -z $CHECK ]]; then
         printf "\n$0: Warning: $VM_NAME still running.\n"
     fi
 fi
