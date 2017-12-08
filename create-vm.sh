@@ -41,24 +41,6 @@ if [[ ! -z "$2" ]]; then
 	NAME_OK=1
 fi
 
-### a progress bar
-### taken from: https://github.com/edouard-lopez/progress-bar.sh/blob/master/progress-bar.sh
-progress-bar() {
-  local duration=${1}
-
-  already_done() { for ((done=0; done<elapsed; done=done+1)); do printf "▇"; done }
-  remaining() { for ((remain=elapsed; remain<duration; remain=remain+1)); do printf " "; done }
-  percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )); }
-  clean_line() { printf "\r"; }
-
-  for (( elapsed=1; elapsed<=duration; elapsed=elapsed+1 )); do
-      already_done; remaining; percentage
-      sleep 1
-      clean_line
-  done
-  clean_line
-}
-
 ### waits until conection to new VM established
 connect-ssh() {
 	local ip=${1}
