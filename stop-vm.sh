@@ -25,14 +25,14 @@ case "$1" in
             printf "\n$0: Cant stop dummy\n\n"
 			exit
         fi
-		LINS=`cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME|wc -l`
+		LINS=`cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
 			printf "\n$0: No such name $VM_NAME found\n\n"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
 			printf "\n$0: More names like '$VM_NAME' found, please be specific:\n"
-			cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME
+			cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"
             printf "\n"
 			exit
 		fi
