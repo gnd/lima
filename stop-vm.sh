@@ -49,7 +49,7 @@ if [[ -z $CHECK ]]; then
     printf "\n$0: Warning: $VM_NAME not running.\n"
 else
     ### Stop the VM
-    printf "\n\nStoping $VM_NAME\n"
+    printf "Stoping $VM_NAME\n"
     virsh destroy $VM_NAME
         
     ### Sleep for a while
@@ -58,6 +58,6 @@ else
     ### Check if successfull
     CHECK=`virsh list --all|grep $VM_NAME`
     if [[ ! -z $CHECK ]]; then
-        printf "\n$0: Warning: $VM_NAME still running.\n"
+        printf "$0: Warning: $VM_NAME still running.\n\n"
     fi
 fi
