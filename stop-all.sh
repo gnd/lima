@@ -11,7 +11,7 @@ CONF_DIR='/data/pool/vms'
 source $CONF_DIR/settings
 
 ### Stop all running VMS from vmlist
-for VM_NAME in `cat $VM_LIST | awk {'print $2;'}`
+for VM_NAME in `cat $VM_LIST | awk {'print $2;'}|grep -v dummy`
 do
     ### Check if the VM runs first
     CHECK=`virsh list --all|grep $VM_NAME`

@@ -37,7 +37,7 @@ connect-ssh() {
 }
 
 ### Start all running VMS from vmlist
-for VM_NAME in `cat $VM_LIST | awk {'print $2;'}`
+for VM_NAME in `cat $VM_LIST | awk {'print $2;'}|grep -v dummy`
 do
     ### Make sure the VM is not running
     CHECK=`virsh list --all|grep $VM_NAME`
