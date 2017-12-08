@@ -75,8 +75,8 @@ if [[ ! -z $CHECK ]]; then
     printf "\n$0: $VM_NAME is already running.\n"
 else
     ### Determine VM parameters
-    VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep $VM_NAME|awk {'print $2;'}`
-    VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep $VM_NAME|awk {'print $2;'}`
+    VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep -wF "$VM_NAME"|awk {'print $2;'}`
+    VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep -wF "$VM_NAME"|awk {'print $2;'}`
     if [[ $VM_TYPE == "dyn" ]]; then
         VM_TYPE_DIR="dynamic"
     fi
