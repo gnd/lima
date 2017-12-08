@@ -27,7 +27,7 @@ case "$1" in
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
-			echo "More names like '$VM_NAME' found, please be specific:"
+			printf "\n $0: More names like '$VM_NAME' found, please be specific:\n"
 			cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME
 			exit
 		fi
@@ -44,7 +44,7 @@ if [[ -z $CHECK ]]; then
     echo "Warning: $VM_NAME not running."
 else
     ### Stop the VM
-    printf "\n\nStoping $VM_NAME"
+    printf "\n\nStoping $VM_NAME\n"
     virsh destroy $VM_NAME
         
     ### Sleep for a while
