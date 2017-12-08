@@ -47,10 +47,16 @@ do
         ### Determine VM parameters
         VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep $VM_NAME|awk {'print $2;'}`
 		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep $VM_NAME|awk {'print $2;'}`
+        if [[ $VM_TYPE == "dyn" ]]; then
+            VM_TYPE_DIR="dynamic"
+        fi
+        if [[ $VM_TYPE == "sta" ]]; then
+            VM_TYPE_DIR="static"
+        fi
     
         ### Start the VM
         echo "Starting $VM_NAME"
-        virsh create $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+        virsh create $VM_DIR/$VM_TYPE_DIR/$VM_NAME/vm.xml
 
         ### Wait for the VM to come up
         connect-ssh $VM_IP $VM_NAME
