@@ -40,7 +40,7 @@ usage() {
         printf "\n"
         printf "This starts the given VM\n"
         printf "Usage: \n"
-        printf "$0 <name NAME> \n\n"
+        printf "$0 <name NAME> [quiet] \n\n"
 }
 
 ### Check if VM_NAME is unique and existing, otherwise exit
@@ -89,7 +89,11 @@ else
     virsh create $VM_DIR/$VM_TYPE_DIR/$VM_NAME/vm.xml
 
     ### Wait for the VM to come up
-    connect-ssh $VM_IP $VM_NAME
+    if [[ $3 != "quiet" ]]; then
+        connect-ssh $VM_IP $VM_NAME
+    else 
+        sleep 1
+    done
 
     ### Print VM is up
     echo "$VM_NAME is up."
