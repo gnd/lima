@@ -42,7 +42,7 @@ esac
 ### Check if the VM runs first
 CHECK=`virsh list --all|grep $VM_NAME`
 if [[ -z $CHECK ]]; then
-    echo "Warning: $VM_NAME not running."
+    printf "\n$0: Warning: $VM_NAME not running.\n"
 else
     ### Stop the VM
     printf "\n\nStoping $VM_NAME\n"
@@ -56,6 +56,6 @@ else
     if [[ -z $CHECK ]]; then
         echo "$VM_NAME has been stopped."
     else
-        echo "Warning: $VM_NAME still running."
+        printf "\n$0: Warning: $VM_NAME still running.\n"
     fi
 fi
