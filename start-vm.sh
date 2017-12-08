@@ -93,7 +93,7 @@ else
         connect-ssh $VM_IP $VM_NAME
     else 
         sleep 1
-    done
+    fi
 
     ### Print VM is up
     echo "$VM_NAME is up."
