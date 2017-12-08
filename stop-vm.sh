@@ -27,8 +27,9 @@ case "$1" in
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
-			printf "\n $0: More names like '$VM_NAME' found, please be specific:\n"
+			printf "\n$0: More names like '$VM_NAME' found, please be specific:\n"
 			cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME
+            printf "\n"
 			exit
 		fi
 	;;
