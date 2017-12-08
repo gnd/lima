@@ -23,7 +23,7 @@ case "$1" in
 		VM_NAME=$2
 		LINS=`cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME|wc -l`
 		if [[ $LINS -lt 1 ]]; then
-			printf "\n$0: No such name $VM_NAME found\n"
+			printf "\n$0: No such name $VM_NAME found\n\n"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
