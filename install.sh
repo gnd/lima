@@ -338,7 +338,7 @@ echo "
 ### Directory settings
 VM_DIR=$ROOTDIR'/pool/vms'							# where the vms reside
 CONF_DIR=\$VM_DIR									# where the vmlist & conf files reside
-SCRIPT_DIR=$ROOTDIR'/pool							# where the scripts reside
+SCRIPT_DIR=$ROOTDIR'/pool'							# where the scripts reside
 VM_LIST=\$CONF_DIR'/vmlist'							# vmlist vm text database
 FWD_LIST=\$CONF_DIR'/forwards'						# port forvards text database
 PRX_LIST=\$CONF_DIR'/proxies.conf'					# apache proxy folders text database
