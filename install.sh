@@ -35,7 +35,7 @@ else
 fi
 
 # Install prerequisities
-apt-get install python git
+apt-get install python git libvirtd
 
 # Create directory structure
 echo "Creating directory structure:"
@@ -46,49 +46,49 @@ else
     echo "Directory $ROOTDIR/pool exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/pool/vms ]; then
+if [ ! -d $ROOTDIR/pool/vms ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool/vms"
     mkdir -p $ROOTDIR/pool/vms
 else
     echo "Directory $ROOTDIR/pool/vms exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/pool/vms/default ]; then
+if [ ! -d $ROOTDIR/pool/vms/default ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool/vms/default"
     mkdir -p $ROOTDIR/pool/vms/default
 else
     echo "Directory $ROOTDIR/pool/vms/default exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/pool/vms/dynamic ]; then
+if [ ! -d $ROOTDIR/pool/vms/dynamic ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool/vms/dynamic"
     mkdir -p $ROOTDIR/pool/vms/dynamic
 else
     echo "Directory $ROOTDIR/pool/vms/dynamic exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/pool/vms/static ]; then
+if [ ! -d $ROOTDIR/pool/vms/static ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool/vms/static"
     mkdir -p $ROOTDIR/pool/vms/static
 else
     echo "Directory $ROOTDIR/pool/vms/static exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/pool/networks ]; then
+if [ ! -d $ROOTDIR/pool/networks ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool/networks"
     mkdir -p $ROOTDIR/pool/networks
 else
     echo "Directory $ROOTDIR/pool/networks exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/backup ]; then
+if [ ! -d $ROOTDIR/backup ] || [ $WO ]; then
     echo "Creating $ROOTDIR/backup"
     mkdir -p $ROOTDIR/backup
 else
     echo "Directory $ROOTDIR/backup exists. Exiting."
     exit
 fi
-if [ ! -d $ROOTDIR/backup/temp ]; then
+if [ ! -d $ROOTDIR/backup/temp ] || [ $WO ]; then
     echo "Creating $ROOTDIR/backup/temp"
     mkdir -p $ROOTDIR/backup/temp
 else
