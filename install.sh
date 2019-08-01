@@ -19,12 +19,12 @@ if [[ $ROOT != "root" ]]; then
 fi
 
 # Ask for the ROOTDIR
-read -p "Please provide the root directory for LIMA:\n" ROOTDIR
+read -p "Please provide the root directory for LIMA:"$'\n' ROOTDIR
 if [ ! -d $ROOTDIR ]; then
 	echo "Creating $ROOTDIR"
 	mkdir $ROOTDIR
 else
-	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?\n" ANSWER
+	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?"$'\n' ANSWER
 	if [ $ANSWER == "yes" ]; then
 		echo "Will overwrite all data"
 		$WO=1
