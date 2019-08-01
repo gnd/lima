@@ -273,16 +273,16 @@ DYN_BLACKLIST=\"$ROOTDIR/pool/vms/dynamic.banned\"
 ##### ---- static bridge rules ---- #####
 
 # accept the ARP protocol
-ebtables -A INPUT -p 0x806 -j ACCEPT
-ebtables -A OUTPUT -p 0x806 -j ACCEPT
+\$EBT -A INPUT -p 0x806 -j ACCEPT
+\$EBT -A OUTPUT -p 0x806 -j ACCEPT
 
 # accept internal SSH traffic to the VMs (note no interface specified)
-ebtables -A INPUT -p IPV4 --ip-proto TCP --ip-sport 22 -j ACCEPT
-ebtables -A OUTPUT -p IPV4 --ip-proto TCP --ip-dport 22 -j ACCEPT
+\$EBT -A INPUT -p IPV4 --ip-proto TCP --ip-sport 22 -j ACCEPT
+\$EBT -A OUTPUT -p IPV4 --ip-proto TCP --ip-dport 22 -j ACCEPT
 
 # accept internal WEB traffic to the VMs
-ebtables -A INPUT -p IPV4 --ip-proto TCP --ip-sport 80 -j ACCEPT
-ebtables -A OUTPUT -p IPV4 --ip-proto TCP --ip-dport 80 -j ACCEPT
+\$EBT -A INPUT -p IPV4 --ip-proto TCP --ip-sport 80 -j ACCEPT
+\$EBT -A OUTPUT -p IPV4 --ip-proto TCP --ip-dport 80 -j ACCEPT
 
 # ALLOW ALL TRAFFIC FROM LISTED STATIC IFs
 if [ -f \$STA_WHITELIST ]; then
