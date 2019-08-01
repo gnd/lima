@@ -19,12 +19,12 @@ if [[ $ROOT != "root" ]]; then
 fi
 
 # Ask for the ROOTDIR
-read -p "Please provide the root directory for LIMA:" ROOTDIR
+read -p "Please provide the root directory for LIMA:\n" ROOTDIR
 if [ ! -d $ROOTDIR ]; then
 	echo "Creating $ROOTDIR"
 	mkdir $ROOTDIR
 else
-	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?" ANSWER
+	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?\n" ANSWER
 	if [ $ANSWER == "yes" ]; then
 		echo "Will overwrite all data"
 		$WO=1
@@ -39,7 +39,7 @@ apt-get install python git
 
 # Create directory structure
 echo "Creating directory structure:"
-if [ ! -d $ROOTDIR/pool ] && [ $WO ]; then
+if [ ! -d $ROOTDIR/pool ] || [ $WO ]; then
     echo "Creating $ROOTDIR/pool"
     mkdir -p $ROOTDIR/pool
 else
