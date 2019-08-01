@@ -7,6 +7,10 @@
 #
 #######################################################################
 
+# Some globals
+WO=0					# Should we overwrite the directories when installing ?
+
+
 # Check if this is run as root
 ROOT=`whoami`
 if [[ $ROOT != "root" ]]; then
@@ -21,9 +25,9 @@ if [ ! -d $ROOTDIR ]; then
 	mkdir $ROOTDIR
 else
 	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?" ANSWER
-	if [[ $ANSWER == 'yes']]; then
+	if [ $ANSWER == "yes" ]; then
 		echo "Will overwrite all data"
-		WO=1
+		$WO=1
 	else
 		echo "Please choose a directory that does not exist. Exiting."
 		exit
@@ -35,7 +39,7 @@ apt-get install python git
 
 # Create directory structure
 echo "Creating directory structure:"
-if [ ! -d $ROOTDIR/pool ]; then
+if [ ! -d $ROOTDIR/pool & $WO ]; then
     echo "Creating $ROOTDIR/pool"
     mkdir -p $ROOTDIR/pool
 else
