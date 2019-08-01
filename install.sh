@@ -233,9 +233,9 @@ EXT_IP=$ext_ip
 # Allow incoming ssh to VM's from internet
 if [ -f /data/pool/vms/forwards ]; then
         IFS=$'\n'
-        for LINE in \$(cat $ROOTDIR/pool/vms/forwards) | grep ON`; do
-                EXT_PORT=`echo \$LINE|awk {'print $1;'}`
-                VM_IP=`echo \$LINE|awk {'print $2;'}`
+        for LINE in \$(cat $ROOTDIR/pool/vms/forwards | grep ON); do
+                EXT_PORT=\$(echo \$LINE|awk {'print $1;'})
+                VM_IP=\$(echo LINE|awk {'print $2;'})
 
                 echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:22\"
                 \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:22
