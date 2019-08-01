@@ -12,11 +12,9 @@ if [[ ! $ANS == "y" ]]; then
 fi
 
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
-
-DEFAULT_SIZE=10
-ISO_DIR='/data/pool/iso'
+source vms/settings
+DEFAULT_SIZE=10						# Default size of the new disk image in GB
+ISO_DIR=$(pwd)/iso					# Location where the installer .iso images should reside
 
 #1. place iso into /data/pool/iso
 #2. meno novej default
@@ -29,8 +27,18 @@ ISO_DIR='/data/pool/iso'
 #6.3 monitoring a skripty
 #6.f soft ktory tam uz musi byt
 
+
+
+# Check if we have some installers first
+read -p "Please type yes if there are some .iso installers in $ISO_DIR:"$'\n' ANSWER
+if [ $ANSWER != "yes" ]; then
+	echo "Please download some installers first. Exiting"
+	exit
+fi
+
+# Set a name for the default VM
 echo "Please name the new default template. This should ideally be a name describing the OS used, eg: debian64"
-read -p "Please provide a name: " NAME
+read -p "Please provide a name:"$'\n' NAME
 
 # Check if name unique
 if [[ -d $VM_DIR/default_$NAME ]]; then
@@ -44,8 +52,7 @@ fi
 echo "Creating directory $VM_DIR/$VM_NAME"
 mkdir $VM_DIR/$VM_NAME
 echo "Copying files .."
-cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_NAME/vm.xml
-cp -pr $VM_DIR/default/default.xml $VM_DIR/$VM_NAME/default.xml
+cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_NAME/default.xml
 
 # Overwrite the disk file
 /usr/bin/qemu-img create -f qcow2 $VM_DIR/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
