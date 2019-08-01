@@ -39,7 +39,7 @@ apt-get install python git
 
 # Create directory structure
 echo "Creating directory structure:"
-if [ ! -d $ROOTDIR/pool & $WO ]; then
+if [ ! -d $ROOTDIR/pool && $WO ]; then
     echo "Creating $ROOTDIR/pool"
     mkdir -p $ROOTDIR/pool
 else
