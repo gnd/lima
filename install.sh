@@ -1,16 +1,11 @@
 #!/bin/bash
 #
-# This installs the LIMA system
+# This installs the LIMA system.
+#
 #
 #       gnd @ gnd.sk, 2019
 #
 #######################################################################
-
-usage() {
-	printf "\n"
-	printf "Usage: \n"
-	printf "$0 <ROOTDIR> \n\n"
-}
 
 # Check if this is run as root
 ROOT=`whoami`
@@ -19,13 +14,24 @@ if [[ $ROOT != "root" ]]; then
     exit
 fi
 
-# Check if ROOTDIR provided
-if [[ -z $1 ]]; then
-    usage
-    exit
+# Ask for the ROOTDIR
+read -p "Please provide the root directory for LIMA:" ROOTDIR
+if [ ! -d $ROOTDIR ]; then
+	echo "Creating $ROOTDIR"
+	mkdir $ROOTDIR
 else
-    $ROOTDIR=$1
+	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?" ANSWER
+	if [[ $ANSWER == 'yes']]; then
+		echo "Will overwrite all data"
+		WO=1
+	else
+		echo "Please choose a directory that does not exist. Exiting."
+		exit
+	fi
 fi
+
+# Install prerequisities
+apt-get install python git
 
 # Create directory structure
 echo "Creating directory structure:"
