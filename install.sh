@@ -35,7 +35,7 @@ else
 fi
 
 # Install prerequisities
-apt-get install python git libvirtd
+apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system
 
 # Create directory structure
 echo "Creating directory structure:"
@@ -122,6 +122,10 @@ alias make-backup='$ROOTDIR/pool/make-backup.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
 " >> /root/.bashrc
+
+# Prepare for networking
+virsh net-destroy default
+virsh net-undefine default
 
 # Create the dynamic network
 echo "Creating lima-dynamic network"
