@@ -35,7 +35,7 @@ else
 fi
 
 # Install prerequisities
-apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system
+apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system net-tools
 
 # Create directory structure
 echo "Creating directory structure:"
@@ -159,11 +159,11 @@ echo "
 
 # Enable the network
 echo "Enabling lima-dynamic"
-virsh net-define /data/pool/networks/dyn0.xml
+virsh net-define $ROOTDIR/pool/networks/dyn0.xml
 virsh net-autostart lima-dynamic
 virsh net-start lima-dynamic
 echo "Enabling lima-static"
-virsh net-define /data/pool/networks/sta0.xml
+virsh net-define $ROOTDIR/pool/networks/sta0.xml
 virsh net-autostart lima-static
 virsh net-start lima-static
 
@@ -197,50 +197,50 @@ VM_DYN_IF=\"dyn0\"
 EXT_IP=$ext_ip
 
 # Create NAT - this is for all dyn0 VM's and some sta0 VM's
-$IPT -t nat -A POSTROUTING -o $EXT_IF -j MASQUERADE
+\$IPT -t nat -A POSTROUTING -o \$EXT_IF -j MASQUERADE
 
 # Allow packets of established connections and those
 #   which are related to established connections
-$IPT -A INPUT -i $VM_STA_IF -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPT -A INPUT -i $VM_DYN_IF -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
+\$IPT -A INPUT -i \$VM_STA_IF -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
+\$IPT -A INPUT -i \$VM_DYN_IF -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # Allow established and related for NAT connections
-$IPT -A FORWARD -i $EXT_IF -o $VM_STA_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
-$IPT -A FORWARD -i $EXT_IF -o $VM_DYN_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
+\$IPT -A FORWARD -i \$EXT_IF -o \$VM_STA_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
+\$IPT -A FORWARD -i \$EXT_IF -o \$VM_DYN_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 ##### ---- static bridge rules ---- #####
 # Allow ICMP ECHO
-$IPT -A INPUT -i $VM_STA_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+\$IPT -A INPUT -i \$VM_STA_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
 # Allow DHCP requests
-$IPT -A INPUT -i $VM_STA_IF -p udp -m udp --dport 67 -j ACCEPT
-$IPT -A INPUT -i $VM_STA_IF -p tcp -m tcp --dport 67 -j ACCEPT
+\$IPT -A INPUT -i \$VM_STA_IF -p udp -m udp --dport 67 -j ACCEPT
+\$IPT -A INPUT -i \$VM_STA_IF -p tcp -m tcp --dport 67 -j ACCEPT
 
 # Allow NAT - this is filtered with EBTABLES - check /etc/init.d/eb-firewall
-$IPT -A FORWARD -i $VM_STA_IF -o $EXT_IF -j ACCEPT
+\$IPT -A FORWARD -i \$VM_STA_IF -o \$EXT_IF -j ACCEPT
 
 ##### ---- dynamic bridge rules ---- #####
 # Allow ICMP ECHO
-$IPT -A INPUT -i $VM_DYN_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+\$IPT -A INPUT -i \$VM_DYN_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
 # Allow DHCP requests
-$IPT -A INPUT -i $VM_DYN_IF -p udp -m udp --dport 67 -j ACCEPT
-$IPT -A INPUT -i $VM_DYN_IF -p tcp -m tcp --dport 67 -j ACCEPT
+\$IPT -A INPUT -i \$VM_DYN_IF -p udp -m udp --dport 67 -j ACCEPT
+\$IPT -A INPUT -i \$VM_DYN_IF -p tcp -m tcp --dport 67 -j ACCEPT
 
 # Allow NAT - this is filtered with EBTABLES - check /etc/init.d/eb-firewall
-$IPT -A FORWARD -i $VM_DYN_IF -o $EXT_IF -j ACCEPT
+\$IPT -A FORWARD -i \$VM_DYN_IF -o \$EXT_IF -j ACCEPT
 
 # Allow incoming ssh to VM's from internet
 if [ -f /data/pool/vms/forwards ]; then
         IFS=$'\n'
-        for LINE in `cat /data/pool/vms/forwards | grep ON`; do
-                EXT_PORT=`echo $LINE|awk {'print $1;'}`
-                VM_IP=`echo $LINE|awk {'print $2;'}`
+        for LINE in `cat $ROOTDIR/pool/vms/forwards | grep ON`; do
+                EXT_PORT=`echo \$LINE|awk {'print $1;'}`
+                VM_IP=`echo \$LINE|awk {'print $2;'}`
 
-                echo \"Adding forward from $EXT_IP:$EXT_PORT to $VM_IP:22\"
-                $IPT -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:22
-                $IPT -A FORWARD -p tcp -d $VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-                $IPT -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
+                echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:22\"
+                \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:22
+                \$IPT -A FORWARD -p tcp -d \$VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+                \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
         done
 fi
 " > /etc/init.d/lima-firewall
@@ -256,18 +256,18 @@ echo "
 EBT=/sbin/ebtables
 STA_IF=\"sta0\"
 DYN_IF=\"dyn0\"
-STA_WHITELIST=\"/data/pool/vms/static.allowed\"
-DYN_BLACKLIST=\"/data/pool/vms/dynamic.banned\"
+STA_WHITELIST=\"$ROOTDIR/pool/vms/static.allowed\"
+DYN_BLACKLIST=\"$ROOTDIR/pool/vms/dynamic.banned\"
 
 # Set default policy to DROP
-$EBT -P INPUT DROP
-$EBT -P OUTPUT DROP
-$EBT -P FORWARD DROP
+\$EBT -P INPUT DROP
+\$EBT -P OUTPUT DROP
+\$EBT -P FORWARD DROP
 
 # Flush old rules
-$EBT -F
-$EBT -Z
-$EBT -X
+\$EBT -F
+\$EBT -Z
+\$EBT -X
 
 ##### ---- static bridge rules ---- #####
 
@@ -284,20 +284,20 @@ ebtables -A INPUT -p IPV4 --ip-proto TCP --ip-sport 80 -j ACCEPT
 ebtables -A OUTPUT -p IPV4 --ip-proto TCP --ip-dport 80 -j ACCEPT
 
 # ALLOW ALL TRAFFIC FROM LISTED STATIC IFs
-if [ -f $STA_WHITELIST ]; then
-        for IF in `cat $STA_WHITELIST`; do $EBT -A INPUT -i $IF -j ACCEPT; $EBT -A OUTPUT -o $IF -j ACCEPT; done
+if [ -f \$STA_WHITELIST ]; then
+        for IF in `cat \$STA_WHITELIST`; do \$EBT -A INPUT -i \$IF -j ACCEPT; \$EBT -A OUTPUT -o \$IF -j ACCEPT; done
 fi
 
 ##### ---- dynamic bridge rules ---- #####
 
 # DISALLOW TRAFFIC FROM BLACKLISTED DYNAMIC IFs
-if [ -f $DYN_BLACKLIST ]; then
-        for IF in `cat $DYN_BLACKLIST`; do $EBT -A INPUT -i $IF -j DROP; $EBT -A OUTPUT -o $IF -j DROP; done
+if [ -f \$DYN_BLACKLIST ]; then
+        for IF in `cat \$DYN_BLACKLIST`; do \$EBT -A INPUT -i \$IF -j DROP; \$EBT -A OUTPUT -o \$IF -j DROP; done
 fi
 
 # ALLOW TRAFFIC FROM ALL OTHER DYNAMIC IFs
-$EBT -A INPUT -i dyn+ -j ACCEPT
-$EBT -A OUTPUT -o dyn+ -j ACCEPT
+\$EBT -A INPUT -i dyn+ -j ACCEPT
+\$EBT -A OUTPUT -o dyn+ -j ACCEPT
 " > /etc/init.d/lima-eb-firewall
 chmod 700 /etc/init.d/lima-eb-firewall
 /etc/init.d/lima-eb-firewall
