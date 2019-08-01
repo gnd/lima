@@ -24,7 +24,7 @@ if [ ! -d $ROOTDIR ]; then
 	echo "Creating $ROOTDIR"
 	mkdir $ROOTDIR
 else
-	read -p "The directory $ROOTDIR exists. Are you sure you want to continue [yes / no]?"$'\n' ANSWER
+	read -p "The directory $ROOTDIR exists. Type 'yes' if you wish to continue:"$'\n' ANSWER
 	if [ $ANSWER == "yes" ]; then
 		echo "Will overwrite all data"
 		$WO=1
@@ -119,6 +119,7 @@ alias list-vm='$ROOTDIR/pool/list-vms.sh'
 alias extend-disk='$ROOTDIR/pool/extend-disk.sh'
 alias create-initial-snapshot='$ROOTDIR/pool/create-initial-snapshot.sh'
 alias make-backup='$ROOTDIR/pool/make-backup.sh'
+alias make-default='$ROOTDIR/pool/make-default.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
 " >> /root/.bashrc
