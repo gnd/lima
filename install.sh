@@ -245,6 +245,7 @@ if [ -f /data/pool/vms/forwards ]; then
 fi
 " > /etc/init.d/lima-firewall
 chmod 700 /etc/init.d/lima-firewall
+echo "Adding rules into iptables"
 /etc/init.d/lima-firewall
 
 # Create the EB firewall
@@ -300,6 +301,7 @@ fi
 \$EBT -A OUTPUT -o dyn+ -j ACCEPT
 " > /etc/init.d/lima-eb-firewall
 chmod 700 /etc/init.d/lima-eb-firewall
+echo "Adding rules into ebtables"
 /etc/init.d/lima-eb-firewall
 
 # Add firewall into startup script
