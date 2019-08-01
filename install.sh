@@ -307,7 +307,7 @@ echo "Adding rules into ebtables"
 # Add firewall into startup script
 echo "Adding firewalls into /etc/rc.local:"
 echo "Do you wish to do this manually ?"
-select opt in "yes no"
+select opt in yes no
 do
 	case $opt in
 		'yes')
