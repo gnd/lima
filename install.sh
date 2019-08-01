@@ -381,4 +381,4 @@ STA_WEEKLY_RETENTION="6"                            # how many days to keep stat
 STA_MONTHLY_RETENTION="30"                          # how many days to keep static monthly
 " >> $ROOTDIR/pool/vms/settings
 
-echo "Installation done. Run make-default to create the first dummy VM."
+echo "Installation done. Run $ROOTDIR/pool/make-default.sh to create the first dummy VM."
