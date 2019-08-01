@@ -122,6 +122,7 @@ alias make-backup='$ROOTDIR/pool/make-backup.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
 " >> /root/.bashrc
+source ~/.bashrc
 
 # Prepare for networking
 virsh net-destroy default
@@ -234,8 +235,8 @@ EXT_IP=$ext_ip
 if [ -f /data/pool/vms/forwards ]; then
         IFS=$'\n'
         for LINE in \$(cat $ROOTDIR/pool/vms/forwards | grep ON); do
-                EXT_PORT=\$(echo \$LINE|awk {'print $1;'})
-                VM_IP=\$(echo LINE|awk {'print $2;'})
+                EXT_PORT=\$(echo \$LINE|awk {'print \$1;'})
+                VM_IP=\$(echo LINE|awk {'print \$2;'})
 
                 echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:22\"
                 \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:22
@@ -328,3 +329,40 @@ do
 		;;
 	esac
 done
+
+# Create a config file
+read -p "Please provide the server domain (eg. example.com):"$'\n' fqdn
+echo "Creating config file"
+echo "
+### Directory settings
+VM_DIR=$ROOTDIR'/pool/vms'							# where the vms reside
+CONF_DIR=\$VM_DIR									# where the vmlist & conf files reside
+SCRIPT_DIR=$ROOTDIR'/pool							# where the scripts reside
+VM_LIST=\$CONF_DIR'/vmlist'							# vmlist vm text database
+FWD_LIST=\$CONF_DIR'/forwards'						# port forvards text database
+PRX_LIST=\$CONF_DIR'/proxies.conf'					# apache proxy folders text database
+
+### Netvork settings
+EXT_IF='$if'										# this is the internet-facing interface
+EXT_IP='$ext_ip'									# IP of the external interface
+SERVER_FQDN='$fqdn'									# server domain name
+SERVER_URL='$fqdn'									# server URL
+IPFW='/etc/init.d/lima-firewall'					# location of the iptables firevall script
+EBFW='/etc/init.d/lima-eb-firewall'					# location of the ebtables firevall script
+APACHE_VHOST_DIR='/etc/apache2/sites-available/'	# location of apache2 vhost definitions (sites-available)
+APACHE_ERRORLOG='/var/log/apache2/error_log'		# apache2 error log
+DEFAULT_IP='10.10.10.10'							# IP of the default VM
+
+### Backup settings
+BUP_DIR=''                                          # where the backups are stored
+DEL_RETENTION="30"                                  # how many days to keep deleted vms
+CONF_RETENTION="30"                                 # how many days to keep configuration backups
+DEFAULT_RETENTION="30"                              # how many days to keep default vm backups
+DYN_DAILY_RETENTION="1"                             # how many days to keep dynamic daily backups
+DYN_WEEKLY_RETENTION="6"                            # how many days to keep dynamic weekly backups
+DYN_MONTHLY_RETENTION="30"                          # how many days to keep dynamic monthly backups
+STA_WEEKLY_RETENTION="6"                            # how many days to keep static weekly backups
+STA_MONTHLY_RETENTION="30"                          # how many days to keep static monthly
+" >> $ROOTDIR/pool/vms/settings
+
+echo "Installation done. Run make-default to create the first dummy VM."
