@@ -123,7 +123,22 @@ alias make-default='$ROOTDIR/pool/make-default.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
 " >> /root/.bashrc
-source ~/.bashrc
+
+# Run the aliases as well, sign ..
+alias add-apache-vhost="$ROOTDIR/pool/add-apache-vhost.sh"
+alias create-vm="$ROOTDIR/pool/create-vm.sh"
+alias disable-nat="$ROOTDIR/pool/disable-nat.sh"
+alias enable-nat="$ROOTDIR/pool/enable-nat.sh"
+alias enable-vnc="$ROOTDIR/pool/enable-vnc.sh"
+alias delete-vm="$ROOTDIR/pool/delete-vm.sh"
+alias lima="$ROOTDIR/pool/show-commands.sh"
+alias list-vm="$ROOTDIR/pool/list-vms.sh"
+alias extend-disk="$ROOTDIR/pool/extend-disk.sh"
+alias create-initial-snapshot="$ROOTDIR/pool/create-initial-snapshot.sh"
+alias make-backup="$ROOTDIR/pool/make-backup.sh"
+alias make-default="$ROOTDIR/pool/make-default.sh"
+alias start-default="$ROOTDIR/pool/start-default.sh"
+alias stop-default="$ROOTDIR/pool/stop-default.sh"
 
 # Prepare for networking
 virsh net-destroy default
