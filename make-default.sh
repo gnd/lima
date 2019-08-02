@@ -50,6 +50,7 @@ read -p "Please provide a name:"$'\n' NAME
 # Check if default directory exists
 if [[ ! -d $VM_DIR/default ]]; then
 	echo "Creating directory for default VMs"
+	mkdir $VM_DIR/default
 fi
 
 # Check if name unique
