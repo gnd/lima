@@ -13,7 +13,7 @@ fi
 
 # Check if LIMA_ROOT set
 if [ -z $LIMA_ROOT ]; then
-	echo "Cant find LIMA. Please check if the install finishe correctly."
+	echo "Cant find LIMA. Please check if the install finished correctly."
 	echo "Exiting. Reason: LIMA_ROOT not set."
 	exit
 fi
@@ -101,14 +101,14 @@ VM_IP="10.10.10.10"
 VM_GATEWAY="10.10.10.1"
 
 ### SED the parameters
-sed -i "s/VM_DIR/$VM_DIR/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s~VM_DIR~$VM_DIR~g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_TYPE/$VM_TYPE/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/default/$VM_NAME/vm.xml
-sed -i "s/VM_ISO/$ISO_DIR\/$VM_ISO/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s~VM_ISO~$ISO_DIR/$VM_ISO~g" $VM_DIR/default/$VM_NAME/vm.xml
 
 # Make sure the default instance is not running
 CHECK=`virsh list --all|grep default`
