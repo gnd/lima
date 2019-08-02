@@ -50,14 +50,14 @@ read -p "Please provide a name:"$'\n' NAME
 # Check if default directory exists
 if [[ ! -d $VM_DIR/default ]]; then
 	echo "Creating directory for default VMs"
+fi
+
+# Check if name unique
+if [[ -d $VM_DIR/default/default_$NAME ]]; then
+	echo "A template called $NAME already exists. Exiting"
+	exit
 else
-	# Check if name unique
-	if [[ -d $VM_DIR/default/$NAME ]]; then
-		echo "A template called $NAME already exists. Exiting"
-		exit
-	else
-		VM_NAME="default_$NAME"
-	fi
+	VM_NAME="default_"$NAME
 fi
 
 # Copy default to new dir
