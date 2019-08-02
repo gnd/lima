@@ -11,10 +11,17 @@ if [[ ! $ANS == "y" ]]; then
 	exit
 fi
 
+# Check if LIMA_ROOT set
+[ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finishe correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-source vms/settings
+source $LIMA_ROOT/vms/settings
 DEFAULT_SIZE=10						# Default size of the new disk image in GB
-ISO_DIR=$(pwd)/iso					# Location where the installer .iso images should reside
+ISO_DIR=$VM_DIR/iso					# Location where the installer .iso images should reside
 
 #1. place iso into /data/pool/iso
 #2. meno novej default
