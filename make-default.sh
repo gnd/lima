@@ -77,16 +77,11 @@ do
 done
 
 ### Set Default VM parameters
-$ip=`$SCRIPT_DIR"/macgen.py"`
 VM_ISO=$iso
 VM_TYPE="default"
-VM_SUBNET="10.10.10.255"
-VM_INDEX="0"
 VM_VNC="11230"
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
-VM_IFACE="sta-10-$ip"
-VM_IP="10.10.10.$ip"
-VM_GATEWAY="10.10.10.1"
+VM_IFACE="sta-def"
 
 ### SED the parameters
 sed -i "s~VM_DIR~$VM_DIR~g" $VM_DIR/default/$VM_NAME/vm.xml

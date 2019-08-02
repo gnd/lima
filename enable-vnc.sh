@@ -84,6 +84,9 @@ case "$1" in
 		fi
 		PORT=`cat $VM_LIST | awk {'print $3" "$4;'}|grep $IP|awk {'print $2;'}`
 	;;
+	'def')
+		PORT=11230
+	;;
 	*)
 		usage
 		exit
