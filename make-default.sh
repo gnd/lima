@@ -90,6 +90,8 @@ do
 done
 
 ### Set Default VM parameters
+VM_ISO=$iso
+VM_TYPE="default"
 VM_SUBNET="10.10.10.255"
 VM_INDEX="0"
 VM_VNC="11230"
@@ -99,16 +101,14 @@ VM_IP="10.10.10.10"
 VM_GATEWAY="10.10.10.1"
 
 ### SED the parameters
-sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_DIR/$VM_DIR/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_TYPE/$VM_TYPE/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/default/$VM_NAME/vm.xml
-
-# Mount requested iso and start install
-sed -i "s/iso\/.*iso/iso\/$iso/g" $VM_DIR/default/$VM_NAME/vm.xml
-sed -i "s/default/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_ISO/$VM_ISO/g" $VM_DIR/default/$VM_NAME/vm.xml
 
 # Make sure the default instance is not running
 CHECK=`virsh list --all|grep default`
