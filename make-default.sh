@@ -37,7 +37,7 @@ ISO_DIR=$VM_DIR/iso					# Location where the installer .iso images should reside
 
 
 # Check if we have some installers first
-read -p "Please type yes if there are some .iso installers in $ISO_DIR:"$'\n' ANSWER
+read -p "Please type yes if $ISO_DIR exists and contains some .iso installers:"$'\n' ANSWER
 if [ $ANSWER != "yes" ]; then
 	echo "Please download some installers first. Exiting"
 	exit
@@ -65,17 +65,26 @@ cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_NAME/default.xml
 /usr/bin/qemu-img create -f qcow2 $VM_DIR/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
 
 # Choose iso to use
-echo ""
-echo "Please provide the iso to use. These are the available iso files:"
-for ISOFILE in `ls $ISO_DIR`
+shopt -s extglob
+echo "Please select the iso to use:"
+isos=`ls $ISO_DIR`
+opts=`echo $isos|sed 's/ /|/g'`
+opts=`echo "+($opts)"`
+select iso in $isos
 do
-	printf "\t - $ISOFILE\n"
+        case $iso in
+        $opts)
+                echo "Choosing: $iso"
+                break
+                ;;
+        *)
+                echo "Invalid: $iso"
+                ;;
+        esac
 done
-echo ""
-read -p "Please enter iso name: " ISO
 
 # Mount requested iso and start install
-sed -i "s/iso\/.*iso/iso\/$ISO/g" $VM_DIR/$VM_NAME/default.xml
+sed -i "s/iso\/.*iso/iso\/$iso/g" $VM_DIR/$VM_NAME/default.xml
 sed -i "s/default/$VM_NAME/g" $VM_DIR/$VM_NAME/default.xml
 
 # Make sure the default instance is not running
