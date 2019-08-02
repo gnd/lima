@@ -47,19 +47,24 @@ fi
 echo "Please name the new default template. This should ideally be a name describing the OS used, eg: debian64"
 read -p "Please provide a name:"$'\n' NAME
 
-# Check if name unique
-if [[ -d $VM_DIR/default_$NAME ]]; then
-	echo "A template called $NAME already exists. Exiting"
-	exit
+# Check if default directory exists
+if [[ ! -d $VM_DIR/default ]]; then
+	echo "Creating directory for default VMs"
 else
-	VM_NAME="default_$NAME"
+	# Check if name unique
+	if [[ -d $VM_DIR/default/$NAME ]]; then
+		echo "A template called $NAME already exists. Exiting"
+		exit
+	else
+		VM_NAME="default_$NAME"
+	fi
 fi
 
 # Copy default to new dir
-echo "Creating directory $VM_DIR/$VM_NAME"
-mkdir $VM_DIR/$VM_NAME
+echo "Creating directory $VM_DIR/default/$VM_NAME"
+mkdir $VM_DIR/default/$VM_NAME
 echo "Copying files .."
-cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_NAME/default.xml
+cp -pr $VM_DIR/default.xml $VM_DIR/default/$VM_NAME/vm.xml
 
 # Overwrite the disk file
 /usr/bin/qemu-img create -f qcow2 $VM_DIR/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
@@ -83,22 +88,39 @@ do
         esac
 done
 
+### Set Default VM parameters
+VM_SUBNET="10.10.10.255"
+VM_INDEX="0"
+VM_VNC="5900"
+VM_MAC=`$SCRIPT_DIR"/macgen.py"`
+VM_IFACE="sta0"
+VM_IP="10.10.10.10"
+VM_GATEWAY="10.10.10.1"
+
+### SED the parameters
+sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_TYPE/$VM_TYPE/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/default/$VM_NAME/vm.xml
+
 # Mount requested iso and start install
-sed -i "s/iso\/.*iso/iso\/$iso/g" $VM_DIR/$VM_NAME/default.xml
-sed -i "s/default/$VM_NAME/g" $VM_DIR/$VM_NAME/default.xml
+sed -i "s/iso\/.*iso/iso\/$iso/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/default/$VM_NAME/g" $VM_DIR/default/$VM_NAME/vm.xml
 
 # Make sure the default instance is not running
 CHECK=`virsh list --all|grep default`
 if [[ ! -z $CHECK ]]; then
-	echo "Default instance is running."
-	echo "Run this script again after default is off."
+	echo "A default instance is running."
+	echo "Run this script again after that default is off."
         echo "Reverting changes."
-        rm -rf $VM_DIR/$VM_NAME
+        rm -rf $VM_DIR/default/$VM_NAME
         exit
 fi
 
 # Start the default VM
-virsh create $VM_DIR/$VM_NAME/default.xml
+virsh create $VM_DIR/default/$VM_NAME/vm.xml
 
 # Connect & install
 echo "Connect to the VM via VNC and finish the install"

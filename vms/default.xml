@@ -54,7 +54,7 @@
     </interface>
     <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='vnc' port='VM_VNC' listen='80.246.200.149'>
+    <graphics type='vnc' port='VM_VNC' listen='VM_EXTIF'>
     </graphics>
     <video>
       <model type='cirrus' vram='16384' heads='1'/>
