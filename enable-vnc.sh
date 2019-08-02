@@ -13,7 +13,7 @@
 usage() {
 	printf "\n"
 	printf "Usage: \n"
-	printf "$0 <port PORT |name NAME |ip IP |iface IFACE> \n\n"
+	printf "$0 <port PORT |name NAME |ip IP |iface IFACE | def> \n\n"
 }
 
 # Check if LIMA_ROOT set
