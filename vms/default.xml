@@ -1,7 +1,7 @@
 <domain type='kvm'>
   <name>VM_NAME</name>
   <os>
-    <type arch='x86_64' machine='pc-i440fx-xenial'>hvm</type>
+    <type arch='x86_64' machine='q35'>hvm</type>
     <boot dev='hd'/>
     <boot dev='cdrom'/>
     <bootmenu enable='yes' timeout='3000'/>
