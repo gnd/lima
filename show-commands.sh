@@ -6,7 +6,7 @@
 #
 ####################################################################
 clear
-
+echo ""
 echo "
  ___        __     ___      ___       __
 |\"  |      |\" \   |\"  \    /\"  |     /\"\"\
@@ -17,9 +17,11 @@ echo "
  \_______)(__\_|_)|___|\__/|___|(___/    \___)
 "
 
+echo ""
 echo "LIMA is a bunch of bash scripts used to easily create,"
 echo "modify and maintain KVM virtual machines using libvirt and virsh"
 echo "gnd@gnd.sk, 2017"
+echo ""
 
 echo -e "\033[1mAvailable commands: \033[0m"
 
