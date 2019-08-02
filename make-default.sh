@@ -68,7 +68,7 @@ echo "Copying files .."
 cp -pr $VM_DIR/default.xml $VM_DIR/default/$VM_NAME/vm.xml
 
 # Overwrite the disk file
-/usr/bin/qemu-img create -f qcow2 $VM_DIR/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
+/usr/bin/qemu-img create -f qcow2 $VM_DIR/default/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
 
 # Choose iso to use
 shopt -s extglob
@@ -92,7 +92,7 @@ done
 ### Set Default VM parameters
 VM_SUBNET="10.10.10.255"
 VM_INDEX="0"
-VM_VNC="5900"
+VM_VNC="11230"
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="sta0"
 VM_IP="10.10.10.10"
