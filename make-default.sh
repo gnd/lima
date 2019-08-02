@@ -108,7 +108,7 @@ sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/default/$VM_NAME/vm.xml
 sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/default/$VM_NAME/vm.xml
-sed -i "s/VM_ISO/$VM_ISO/g" $VM_DIR/default/$VM_NAME/vm.xml
+sed -i "s/VM_ISO/$ISO_DIR\/$VM_ISO/g" $VM_DIR/default/$VM_NAME/vm.xml
 
 # Make sure the default instance is not running
 CHECK=`virsh list --all|grep default`
