@@ -23,19 +23,6 @@ source $LIMA_ROOT/vms/settings
 DEFAULT_SIZE=10						# Default size of the new disk image in GB
 ISO_DIR=$VM_DIR/iso					# Location where the installer .iso images should reside
 
-#1. place iso into /data/pool/iso
-#2. meno novej default
-#3. vytvorit folder a skopirovat staru default
-#f. namountovat ziadane iso a nastartovat default
-#5. instalacia systemu
-#6. finalne nastavenie masiny:
-#6.1 default IP
-#6.2 ssh kluce
-#6.3 monitoring a skripty
-#6.f soft ktory tam uz musi byt
-
-
-
 # Check if we have some installers first
 read -p "Please type yes if $ISO_DIR exists and contains some .iso installers:"$'\n' ANSWER
 if [ $ANSWER != "yes" ]; then

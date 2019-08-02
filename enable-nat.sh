@@ -6,7 +6,7 @@
 # 	static VM's should not have a outbound connection by default.
 #	It should be enabled only on a case by case basis and added
 #	to the firewall
-# 
+#
 #	The inbound connections are served through a proxy server
 #	like Nginx or Apache
 #
@@ -20,9 +20,15 @@ usage() {
         printf "$0 <iface IFACE |name NAME |ip IP> \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ### VM specified
 case "$1" in

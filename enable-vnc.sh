@@ -16,9 +16,15 @@ usage() {
 	printf "$0 <port PORT |name NAME |ip IP |iface IFACE> \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ### VM specified
 case "$1" in
@@ -94,15 +100,15 @@ fi
 ### Enable VNC connections
 /sbin/iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $PORT -m state --state NEW -j ACCEPT
 
-### Disable in 3m
+### Disable in 1m
 RND=`openssl rand -hex 2`
 CMD="/sbin/iptables -D INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $PORT -m state --state NEW -j ACCEPT"
 echo $CMD > /tmp/job_$RND
 chmod 700 /tmp/job_$RND
-at now + 3 min < /tmp/job_$RND
+at now + 1 min < /tmp/job_$RND
 
 ### Notice
 echo "VNC connection to port $PORT enabled !"
-echo "This will auto-disable in 3 minutes"
+echo "This will auto-disable in 1 minutes"
 echo "!! DONT FORGET TO LOG OFF BEFORE CLOSING CONNECTION !!"
 echo ""
