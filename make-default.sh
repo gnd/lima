@@ -12,7 +12,7 @@ if [[ ! $ANS == "y" ]]; then
 fi
 
 # Check if LIMA_ROOT set
-[ -z $LIMA_ROOT ]; then
+if [ -z $LIMA_ROOT ]; then
 	echo "Cant find LIMA. Please check if the install finishe correctly."
 	echo "Exiting. Reason: LIMA_ROOT not set."
 	exit

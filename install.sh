@@ -108,7 +108,7 @@ git checkout origin/master -ft
 echo "Adding aliases to .bashrc"
 echo "
 ### Setting LIMA_ROOT
-export LIMA_ROOT=$ROOTDIR
+export LIMA_ROOT=$ROOTDIR/pool
 
 ### Lima aliases
 alias add-apache-vhost='$ROOTDIR/pool/add-apache-vhost.sh'
@@ -126,9 +126,6 @@ alias make-default='$ROOTDIR/pool/make-default.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
 " >> /root/.bashrc
-
-# Run the aliases as well
-source /root/.bashrc
 
 # Prepare for networking
 virsh net-destroy default
@@ -371,4 +368,4 @@ STA_WEEKLY_RETENTION="6"                            # how many days to keep stat
 STA_MONTHLY_RETENTION="30"                          # how many days to keep static monthly
 " >> $ROOTDIR/pool/vms/settings
 
-echo "Installation done. Run $ROOTDIR/pool/make-default.sh to create the first dummy VM."
+echo "Installation done. Reboot and run $ROOTDIR/pool/make-default.sh to create the first dummy VM."
