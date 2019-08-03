@@ -144,7 +144,7 @@ VM_VNC=`cat $VM_LIST | awk {'print $4;'} | sort | tail -1`
 if [[ $VM_INDEX -gt "199" ]]; then
 	VM_SUBNET=$((VM_SUBNET+1))
 	VM_INDEX=100
-	
+
 else
 	VM_INDEX=$((VM_INDEX+1))
 fi
@@ -157,7 +157,7 @@ fi
 if [[ $VM_TYPE_ABR == "dyn" ]] && [[ $VM_SUBNET -gt "29" ]]; then
         echo "Dynamic address range full. Please contact the admin."
         exit
-fi 
+fi
 
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="$VM_TYPE_ABR-$VM_SUBNET-$VM_INDEX"
@@ -181,7 +181,7 @@ if [[ ! -z $CHECK ]]; then
 	echo "Default instance is running."
 	echo "Run this script again after default is off."
 	echo "Reverting changes & destroying the new VM."
-	virsh destroy $VM_NAME	
+	virsh destroy $VM_NAME
 	rm -rf $VM_DIR/$VM_TYPE/$VM_NAME
 	sed -i "/.*$VM_NAME.*/d" $VM_LIST
 	exit
@@ -249,10 +249,10 @@ fi
 read -p "Enable SSH forwarding to the machine ? [y/n]: " ANS
 if [[ "$ANS" == "y" ]]; then
 	EXT_PORT=$VM_SUBNET$VM_INDEX
-	iptables -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:22 
+	iptables -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:22
 	iptables -A FORWARD -p tcp -d $VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 	iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
-	echo "$VM_SUBNET$VM_INDEX $VM_IP ON" >> $VM_DIR/forwards
+	echo "$VM_SUBNET$VM_INDEX $VM_IP ON" >> $VM_DIR/ssh-forwards
 	echo "Enabling external port $EXT_PORT forwarding to $VM_IP:22 .."
 	PORT_FWD_USED=1
 fi
