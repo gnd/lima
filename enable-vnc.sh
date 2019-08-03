@@ -114,6 +114,7 @@ let "EXT_PORT = 5330 + $PORT"
 
 ### Disable in 1m
 RND=`openssl rand -hex 2`
+# TODO deleting from post/prerouting needs to be done differently
 CMD="/sbin/iptables -t nat -D PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:$PORT
 /sbin/iptables -D FORWARD -p tcp -d $VM_IP --dport $PORT -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 /sbin/iptables -D INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
