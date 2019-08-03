@@ -191,8 +191,7 @@ do
 done
 echo "Extending the firewall"
 ext_ip=`ifconfig|grep $if -A 2|grep "inet "|awk {'print $2;'}`
-echo "
-#!/bin/sh
+echo "#!/bin/sh
 # Define variables
 IPT=/sbin/iptables
 EXT_IF=$if
@@ -247,21 +246,6 @@ if [ -f $ROOTDIR/pool/vms/ssh-forwards ]; then
                 \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
         done
 fi
-
-# Allow incoming vnc to VM's from internet
-if [ -f $ROOTDIR/pool/vms/vnc-forwards ]; then
-        IFS=$'\n'
-        for LINE in \$(cat $ROOTDIR/pool/vms/vnc-forwards | grep ON); do
-                EXT_PORT=\$(echo \$LINE|awk {'print \$1;'})
-                VM_IP=\$(echo LINE|awk {'print \$2;'})
-                VNC_PORT=\$(echo LINE|awk {'print \$3;'})
-
-                echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:\$VNC_PORT\"
-                \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:\$VNC_PORT
-                \$IPT -A FORWARD -p tcp -d \$VM_IP --dport \$VNC_PORT -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-                \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
-        done
-fi
 " > /etc/init.d/lima-firewall
 chmod 700 /etc/init.d/lima-firewall
 echo "Adding rules into iptables"
@@ -269,8 +253,7 @@ echo "Adding rules into iptables"
 
 # Create the EB firewall
 echo "Creating the ebtables firewall"
-echo "
-#!/bin/bash
+echo "#!/bin/bash
 
 # Define variables
 EBT=/sbin/ebtables
