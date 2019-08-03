@@ -199,6 +199,9 @@ VM_STA_IF=\"sta0\"
 VM_DYN_IF=\"dyn0\"
 EXT_IP=$ext_ip
 
+# Enable IP forwarding
+sysctl -w net.ipv4.ip_forward=1
+
 # Create NAT - this is for all dyn0 VM's and some sta0 VM's
 \$IPT -t nat -A POSTROUTING -o \$EXT_IF -j MASQUERADE
 
