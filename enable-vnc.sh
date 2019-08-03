@@ -89,8 +89,7 @@ case "$1" in
 		PORT=`cat $VM_LIST | awk {'print $3" "$4;'}|grep $IP|awk {'print $2;'}`
 	;;
 	'def')
-		VM_IP=127.0.0.1
-		PORT=5900
+		PORT=11230
 	;;
 	*)
 		usage
@@ -106,19 +105,12 @@ if [[ $LINS -gt 0 ]]; then
 fi
 
 ### Enable VNC connections
-let "EXT_PORT = 5330 + $PORT"
-/sbin/iptables -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:$PORT
-/sbin/iptables -A FORWARD -p tcp -d $VM_IP --dport $PORT -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-/sbin/iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
-
+/sbin/iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $PORT -m state --state NEW -j ACCEPT
 
 ### Disable in 1m
 RND=`openssl rand -hex 2`
 # TODO deleting from post/prerouting needs to be done differently
-CMD="/sbin/iptables -t nat -D PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:$PORT
-/sbin/iptables -D FORWARD -p tcp -d $VM_IP --dport $PORT -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-/sbin/iptables -D INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
-"
+CMD="/sbin/iptables -D INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $PORT -m state --state NEW -j ACCEPT"
 echo $CMD > /tmp/job_$RND
 chmod 700 /tmp/job_$RND
 at now + 1 min < /tmp/job_$RND

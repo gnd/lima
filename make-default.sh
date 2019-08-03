@@ -79,7 +79,7 @@ done
 ### Set Default VM parameters
 VM_ISO=$iso
 VM_TYPE="default"
-VM_VNC="5900"
+VM_VNC="11230"
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="sta-def"
 VM_EXTIF="0.0.0.0"
