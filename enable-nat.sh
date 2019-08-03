@@ -74,6 +74,9 @@ case "$1" in
 		fi
 		IFACE=`cat $VM_LIST | awk {'print $1" "$3;'}|grep $IP|awk {'print $1;'}`
 	;;
+    'def')
+        IFACE='sta-def'
+    ;;
 	*)
 		usage
 		exit
