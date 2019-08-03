@@ -82,7 +82,7 @@ VM_TYPE="default"
 VM_VNC="5900"
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="sta-def"
-VM_EXTIF=$EXT_IF
+VM_EXTIF=$EXT_IP
 
 ### SED the parameters
 sed -i "s~VM_DIR~$VM_DIR~g" $VM_DIR/default/$VM_NAME/vm.xml
