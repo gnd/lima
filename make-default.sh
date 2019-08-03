@@ -79,7 +79,7 @@ done
 ### Set Default VM parameters
 VM_ISO=$iso
 VM_TYPE="default"
-VM_VNC="11230"
+VM_VNC="5900"
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="sta-def"
 
@@ -107,4 +107,5 @@ fi
 virsh create $VM_DIR/default/$VM_NAME/vm.xml
 
 # Connect & install
-echo "Connect to the VM via VNC and finish the install"
+echo "Connect to the default VM $VM_NAME via VNC and finish the install."
+echo "Enable VNC like: 'enable-vnc def' and connect to $EXT_IP:11230"
