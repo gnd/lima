@@ -40,7 +40,8 @@ case "$1" in
 			cat $VM_LIST | awk {'print $4;'}|grep $PORT
 			exit
 		fi
-		PORT=`cat $VM_LIST | awk {'print $4;'}|grep $PORT|tail -1`
+		VM_IP=`cat $VM_LIST | awk {'print $4" "$3;'}|grep $NAME|awk {'print $2;'}`
+		PORT=$2
 	;;
 	'iface')
 		IFACE=$2
@@ -54,6 +55,7 @@ case "$1" in
 			cat $VM_LIST | awk {'print $1;'}|grep $IFACE
 			exit
 		fi
+		VM_IP=`cat $VM_LIST | awk {'print $1" "$3;'}|grep $NAME|awk {'print $2;'}`
 		PORT=`cat $VM_LIST | awk {'print $1" "$4;'}|grep $IFACE|awk {'print $2;'}`
 	;;
 	'name')
@@ -68,6 +70,7 @@ case "$1" in
 			cat $VM_LIST | awk {'print $2;'}|grep $NAME
 			exit
 		fi
+		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep $NAME|awk {'print $2;'}`
 		PORT=`cat $VM_LIST | awk {'print $2" "$4;'}|grep $NAME|awk {'print $2;'}`
 	;;
 	'ip')
@@ -82,9 +85,11 @@ case "$1" in
 			cat $VM_LIST | awk {'print $3;'}|grep $IP
 			exit
 		fi
+		VM_IP=$IP
 		PORT=`cat $VM_LIST | awk {'print $3" "$4;'}|grep $IP|awk {'print $2;'}`
 	;;
 	'def')
+		VM_IP=127.0.0.1
 		PORT=5900
 	;;
 	*)
