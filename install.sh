@@ -35,7 +35,7 @@ else
 fi
 
 # Install prerequisities
-apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system net-tools qemu-kvm
+apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system net-tools qemu-kvm sgabios
 
 # Create directory structure
 echo "Creating directory structure:"
@@ -231,19 +231,34 @@ EXT_IP=$ext_ip
 \$IPT -A INPUT -i \$VM_DYN_IF -p udp -m udp --dport 67 -j ACCEPT
 \$IPT -A INPUT -i \$VM_DYN_IF -p tcp -m tcp --dport 67 -j ACCEPT
 
-# Allow NAT - this is filtered with EBTABLES - check /etc/init.d/eb-firewall
+# Allow NAT - this is filtered with EBTABLES - check /etc/init.d/lima-eb-firewall
 \$IPT -A FORWARD -i \$VM_DYN_IF -o \$EXT_IF -j ACCEPT
 
 # Allow incoming ssh to VM's from internet
-if [ -f /data/pool/vms/forwards ]; then
+if [ -f $ROOTDIR/pool/vms/ssh-forwards ]; then
         IFS=$'\n'
-        for LINE in \$(cat $ROOTDIR/pool/vms/forwards | grep ON); do
+        for LINE in \$(cat $ROOTDIR/pool/vms/ssh-forwards | grep ON); do
                 EXT_PORT=\$(echo \$LINE|awk {'print \$1;'})
                 VM_IP=\$(echo LINE|awk {'print \$2;'})
 
                 echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:22\"
                 \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:22
                 \$IPT -A FORWARD -p tcp -d \$VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+                \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
+        done
+fi
+
+# Allow incoming vnc to VM's from internet
+if [ -f $ROOTDIR/pool/vms/vnc-forwards ]; then
+        IFS=$'\n'
+        for LINE in \$(cat $ROOTDIR/pool/vms/vnc-forwards | grep ON); do
+                EXT_PORT=\$(echo \$LINE|awk {'print \$1;'})
+                VM_IP=\$(echo LINE|awk {'print \$2;'})
+                VNC_PORT=\$(echo LINE|awk {'print \$3;'})
+
+                echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:\$VNC_PORT\"
+                \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:\$VNC_PORT
+                \$IPT -A FORWARD -p tcp -d \$VM_IP --dport \$VNC_PORT -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
                 \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
         done
 fi
