@@ -12,12 +12,18 @@
 usage() {
         printf "\n"
         printf "Usage: \n"
-        printf "$0 <iface IFACE |name NAME |ip IP> \n\n"
+        printf "$0 <iface IFACE |name NAME |ip IP |def> \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ### VM specified
 case "$1" in
@@ -63,6 +69,9 @@ case "$1" in
 		fi
 		IFACE=`cat $VM_LIST | awk {'print $1" "$3;'}|grep $IP|awk {'print $1;'}`
 	;;
+    'def')
+        IFACE='sta-def'
+    ;;
 	*)
 		usage
 		exit
