@@ -122,7 +122,7 @@ do
                 ;;
         esac
 done
-$DEF_VM=$vm
+DEF_VM=$vm
 
 ### Check if VM already exists
 CHECK=`virsh list --all|grep $VM_NAME`
