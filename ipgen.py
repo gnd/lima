@@ -12,7 +12,7 @@ vmlist = sys.argv[1]
 def genIP(vmtype, vmlist):
 	if (os.path.isfile(vmlist)):
 		# parse vmlist
-		f = file(vmlist, r)
+		f = file(vmlist, 'r')
 		vms = f.readlines()
 		f.close()
 
