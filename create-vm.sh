@@ -58,14 +58,15 @@ connect-ssh() {
 	clean_line() { printf "\r"; }
 
 	while [[ "$con" == "0" ]]; do
-		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no $ip hostname`
+		check=`ssh -q -o ConnectTimeout=10 -o StrictHostKeyChecking=no $ip hostname`
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
-                        tries=$((tries+1))
-                        for (( try=1; try<=tries; try=try+1 )); do
-                                printf "Waiting for VM: "$tries"s "; draw_tries
-                                clean_line
-                        done
+            tries=$((tries+1))
+			print_tries=$((tries*10))
+            for (( try=1; try<=tries; try=try+1 )); do
+                printf "Waiting for VM: "$print_tries"s "; draw_tries
+                clean_line
+            done
 		else
 			con=1
 			printf "\n\nVM up ! "
@@ -297,7 +298,6 @@ if [[ "$ANS" == "y" ]]; then
 fi
 
 ### Final reboot
-virsh autostart $VM_NAME
 virsh reboot $VM_NAME
 connect-ssh $VM_IP $VM_NAME
 echo ""

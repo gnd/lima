@@ -47,10 +47,12 @@ do
         fi
 
 	# Get port forwards for the VM
-	FWD_LINS=`cat $FWD_LIST|grep " $VM_IP "|wc -l`
-	if [[ $FWD_LINS == "1" ]]; then
-		FWD_PORT=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $1;'}`
-		FWD_ON=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $3;'}`
+	if [[ -f $FWD_LIST ]]; then
+		FWD_LINS=`cat $FWD_LIST|grep " $VM_IP "|wc -l`
+		if [[ $FWD_LINS == "1" ]]; then
+			FWD_PORT=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $1;'}`
+			FWD_ON=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $3;'}`
+		fi
 	fi
 
 	# Get Apache proxies for the VM
