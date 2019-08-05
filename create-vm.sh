@@ -104,6 +104,26 @@ if [[ "$NAME_OK" == "0" ]]; then
 	read -p "Please provide instance name: " VM_NAME
 fi
 
+# Ask what default VM to use
+shopt -s extglob
+echo "Please select what default VM to use as template:"
+vms=`ls $VM_DIR/default/`
+opts=`echo $vms|sed 's/ /|/g'`
+opts=`echo "+($opts)"`
+select vm in $vms
+do
+        case $vm in
+        $vms)
+                echo "Choosing: $vm"
+                break
+                ;;
+        *)
+                echo "Invalid: $vm"
+                ;;
+        esac
+done
+$DEF_VM=$vm
+
 ### Check if VM already exists
 CHECK=`virsh list --all|grep $VM_NAME`
 if [[ ! -z $CHECK ]]; then
@@ -117,8 +137,8 @@ if [[ ! -z $CHECK ]]; then
 		virsh destroy $VM_NAME
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
 		echo "Copying files .."
-		cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-		cp -pr $VM_DIR/default/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
+		cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+		cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
         fi
 else
 	if [[ -d $VM_DIR/$VM_TYPE/$VM_NAME ]]; then
@@ -129,30 +149,38 @@ else
 		fi
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
                 echo "Copying files .."
-                cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-                cp -pr $VM_DIR/default/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
+                cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+                cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	else
 		echo "Creating directory $VM_DIR/$VM_TYPE/$VM_NAME"
 		mkdir $VM_DIR/$VM_TYPE/$VM_NAME
 		echo "Copying files .."
-		cp -pr $VM_DIR/default/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-		cp -pr $VM_DIR/default/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
+		cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+		cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	fi
 fi
 
 ### Determine VM parameters
-VM_SUBNET=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed "s/$VM_TYPE_ABR-//g" |  sed 's/-.*$//g'`
-VM_INDEX=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed 's/^.*-//g'`
-VM_VNC=`cat $VM_LIST | awk {'print $4;'} | sort | tail -1`
+if [ -f $VM_LIST ]; then
+	VM_SUBNET=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed "s/$VM_TYPE_ABR-//g" |  sed 's/-.*$//g'`
+	VM_INDEX=`$SCRIPT_DIR"/ipgen.py" $VM_TYPE $VM_LIST`
+	VM_VNC=`$SCRIPT_DIR"/vncgen.py" $VM_LIST`
+else
+	# Obviously we are starting with a first VM, so lets use default parameters
+	if [ $VM_TYPE == "abs" ]; then
+		VM_SUBNET='10'
+	else
+		VM_SUBNET='20'
+	fi
+	VM_INDEX='100'
+	VM_VNC='11231'
+fi
 
 # If IP/INDEX overflowing from 100-200 range, increase SUBNET
 # Increasing subnet might need adding another bridge ...
 if [[ $VM_INDEX -gt "199" ]]; then
 	VM_SUBNET=$((VM_SUBNET+1))
 	VM_INDEX=100
-
-else
-	VM_INDEX=$((VM_INDEX+1))
 fi
 
 # Sanity check if our range not full (might never happen)
@@ -168,7 +196,6 @@ fi
 VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="$VM_TYPE_ABR-$VM_SUBNET-$VM_INDEX"
 VM_IP="10.10.$VM_SUBNET.$VM_INDEX"
-VM_VNC=$((VM_VNC+1))
 VM_GATEWAY="10.10.$VM_SUBNET.1"
 
 ### SED the parameters

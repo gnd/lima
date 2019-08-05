@@ -1,32 +1,33 @@
 #!/usr/bin/python
-# ipgen.py script to generate a free IP address for LIMA guests
+# vncden.py script to find a free VNC port for LIMA guests
 import sys
 import random
 import os.path
 
-# parse the machine type
-vmtype = sys.argv[0]
+# parse args
 vmlist = sys.argv[1]
 
 # generate IP according to machine type
-def genIP(vmtype, vmlist):
+def genVNC(vmlist):
 	if (os.path.isfile(vmlist)):
 		# parse vmlist
 		f = file(vmlist, r)
 		vms = f.readlines()
 		f.close()
 
-		# get all vm ips
+		# get all vm vnc ports
 		used = []
+		max = 0
 		for vm in vms:
 			attr = vm.split()
-			if (((attr[4] == 'sta') && (vmtype == 'static')) || ((attr[4] == 'dyn') && (vmtype == 'dynamic')):
-				used.append(attr[0].split['-'][2])
+			used.append(attr[3])
+			if (int(attr[3]) > max):
+				max = int(attr[3]
 
 		# find the first free number
-		for i in range(100,199):
+		for i in range(11231,max+2):
 			if i not in used:
 				return i
 				break
 
-print genIP(vmtype, vmlist)
+print genVNC(vmlist)

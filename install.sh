@@ -189,6 +189,7 @@ do
                 ;;
         esac
 done
+
 echo "Extending the firewall"
 ext_ip=`ifconfig|grep $if -A 2|grep "inet "|awk {'print $2;'}`
 echo "#!/bin/sh
