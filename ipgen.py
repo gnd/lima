@@ -20,7 +20,7 @@ def genIP(vmtype, vmlist):
 		used = []
 		for vm in vms:
 			attr = vm.split()
-			if (((attr[4] == 'sta') && (vmtype == 'static')) || ((attr[4] == 'dyn') && (vmtype == 'dynamic')):
+			if (((attr[4] == 'sta') and (vmtype == 'static')) or ((attr[4] == 'dyn') and (vmtype == 'dynamic')):
 				used.append(attr[0].split['-'][2])
 
 		# find the first free number

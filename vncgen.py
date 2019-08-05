@@ -17,15 +17,15 @@ def genVNC(vmlist):
 
 		# get all vm vnc ports
 		used = []
-		max = 0
+		max_used = 0
 		for vm in vms:
 			attr = vm.split()
 			used.append(attr[3])
-			if (int(attr[3]) > max):
-				max = int(attr[3]
+			if (int(attr[3]) > max_used):
+				max_used = int(attr[3]
 
 		# find the first free number
-		for i in range(11231,max+2):
+		for i in range(11231,max_used+2):
 			if i not in used:
 				return i
 				break
