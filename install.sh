@@ -95,6 +95,20 @@ else
     echo "Directory $ROOTDIR/backup/temp exists. Exiting."
     exit
 fi
+if [ ! -d $ROOTDIR/backup/temp/vms/static ] || [ $WO ]; then
+    echo "Creating $ROOTDIR/backup/temp/vms/static"
+    mkdir -p $ROOTDIR/backup/temp/vms/static
+else
+    echo "Directory $ROOTDIR/backup/temp/vms/static exists. Exiting."
+    exit
+fi
+if [ ! -d $ROOTDIR/backup/temp/vms/dynamic ] || [ $WO ]; then
+    echo "Creating $ROOTDIR/backup/temp/vms/dynamic"
+    mkdir -p $ROOTDIR/backup/temp/vms/dynamic
+else
+    echo "Directory $ROOTDIR/backup/temp/vms/dynamic exists. Exiting."
+    exit
+fi
 
 # Checkout latest scripts from github
 echo "Checking out LIMA from Github (https://github.com/gnd/lima)"
@@ -169,6 +183,12 @@ echo "Enabling lima-static"
 virsh net-define $ROOTDIR/pool/networks/sta0.xml
 virsh net-autostart lima-static
 virsh net-start lima-static
+
+# Touch some default files
+touch $ROOTDIR/pool/vms/static.allowed
+touch $ROOTDIR/pool/vms/dynamic.banned
+touch $ROOTDIR/pool/vms/proxies.conf
+touch $ROOTDIR/pool/vms/forwards
 
 # Extending the firewall
 shopt -s extglob
