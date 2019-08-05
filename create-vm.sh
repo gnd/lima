@@ -161,13 +161,13 @@ else
 fi
 
 ### Determine VM parameters
-if [ -f $VM_LIST ]; then
+if [[ -f $VM_LIST ]]; then
 	VM_SUBNET=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed "s/$VM_TYPE_ABR-//g" |  sed 's/-.*$//g'`
 	VM_INDEX=`$SCRIPT_DIR"/ipgen.py" $VM_TYPE $VM_LIST`
 	VM_VNC=`$SCRIPT_DIR"/vncgen.py" $VM_LIST`
 else
 	# Obviously we are starting with a first VM, so lets use default parameters
-	if [ $VM_TYPE == "abs" ]; then
+	if [[ $VM_TYPE == "sta" ]]; then
 		VM_SUBNET='10'
 	else
 		VM_SUBNET='20'
