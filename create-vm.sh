@@ -62,9 +62,8 @@ connect-ssh() {
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
             tries=$((tries+1))
-			print_tries=$((tries*10))
             for (( try=1; try<=tries; try=try+1 )); do
-                printf "Waiting for VM: "$print_tries"s "; draw_tries
+                printf "Waiting for VM: "$tries"s "; draw_tries
                 clean_line
             done
 		else
