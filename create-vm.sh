@@ -137,7 +137,7 @@ if [[ ! -z $CHECK ]]; then
 		virsh destroy $VM_NAME
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
 		echo "Copying files .."
-		cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+		cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 		cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
         fi
 else
@@ -149,13 +149,13 @@ else
 		fi
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
                 echo "Copying files .."
-                cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+                cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
                 cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	else
 		echo "Creating directory $VM_DIR/$VM_TYPE/$VM_NAME"
 		mkdir $VM_DIR/$VM_TYPE/$VM_NAME
 		echo "Copying files .."
-		cp -pr $VM_DIR/default/$DEF_VM/vm.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+		cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 		cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	fi
 fi
