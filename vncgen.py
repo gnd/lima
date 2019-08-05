@@ -17,7 +17,7 @@ def genVNC(vmlist):
 
 		# get all vm vnc ports
 		used = []
-		max_used = 0
+		max_used = 11230
 		for vm in vms:
 			attr = vm.split()
 			used.append(attr[3])
