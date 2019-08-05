@@ -20,7 +20,7 @@ def genVNC(vmlist):
 		max_used = 11230
 		for vm in vms:
 			attr = vm.split()
-			used.append(attr[3])
+			used.append(int(attr[3]))
 			if (int(attr[3]) > max_used):
 				max_used = int(attr[3])
 
