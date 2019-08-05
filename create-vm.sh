@@ -167,7 +167,7 @@ if [[ -f $VM_LIST ]]; then
 	VM_VNC=`$SCRIPT_DIR"/vncgen.py" $VM_LIST`
 else
 	# Obviously we are starting with a first VM, so lets use default parameters
-	if [[ $VM_TYPE == "sta" ]]; then
+	if [[ $VM_TYPE == "static" ]]; then
 		VM_SUBNET='10'
 	else
 		VM_SUBNET='20'
