@@ -23,7 +23,7 @@ def genVNC(vmlist):
 			used.append(attr[3])
 			if (int(attr[3]) > max_used):
 				max_used = int(attr[3]
-
+		
 		# find the first free number
 		for i in range(11231,max_used+2):
 			if i not in used:
