@@ -214,13 +214,26 @@ sysctl -w net.ipv4.ip_forward=1
 \$IPT -A FORWARD -i \$EXT_IF -o \$VM_STA_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
 \$IPT -A FORWARD -i \$EXT_IF -o \$VM_DYN_IF -m state --state RELATED,ESTABLISHED -j ACCEPT
 
+# Disallow VNC to the default machine on the loopback interface
+\$IPT -A INPUT -i lo -p tcp -m tcp --dport 11230 -j DROP
+
+# Disallow VNC to any other machines on the loopback interface
+if [ -f $ROOTDIR/pool/vms/vmlist ]; then
+        IFS=$'\n'
+        for VNC_PORT in \$(cat $ROOTDIR/pool/vms/vmlist|awk {'print \$4;'}); do
+                \$IPT -A INPUT -i lo -p tcp -m tcp --dport \$VNC_PORT -j DROP
+        done
+fi
+
 ##### ---- static bridge rules ---- #####
 # Allow ICMP ECHO
 \$IPT -A INPUT -i \$VM_STA_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
-# Allow DHCP requests
-\$IPT -A INPUT -i \$VM_STA_IF -p udp -m udp --dport 67 -j ACCEPT
-\$IPT -A INPUT -i \$VM_STA_IF -p tcp -m tcp --dport 67 -j ACCEPT
+# Allow INCOMING SSH TRAFFIC FROM THE VMS
+\$IPT -A INPUT -i \$VM_STA_IF -p tcp -m tcp --sport 22 -j ACCEPT
+
+#  Allow INCOMING HTTP TRAFFIC FROM THE VMS
+\$IPT -A INPUT -i \$VM_STA_IF -p tcp -m tcp --sport 80 -j ACCEPT
 
 # Allow NAT - this is filtered with EBTABLES - check /etc/init.d/eb-firewall
 \$IPT -A FORWARD -i \$VM_STA_IF -o \$EXT_IF -j ACCEPT
@@ -229,9 +242,11 @@ sysctl -w net.ipv4.ip_forward=1
 # Allow ICMP ECHO
 \$IPT -A INPUT -i \$VM_DYN_IF -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
-# Allow DHCP requests
-\$IPT -A INPUT -i \$VM_DYN_IF -p udp -m udp --dport 67 -j ACCEPT
-\$IPT -A INPUT -i \$VM_DYN_IF -p tcp -m tcp --dport 67 -j ACCEPT
+# Allow INCOMING SSH TRAFFIC FROM THE VMS
+\$IPT -A INPUT -i \$VM_DYN_IF -p tcp -m tcp --sport 22 -j ACCEPT
+
+#  Allow INCOMING HTTP TRAFFIC FROM THE VMS
+\$IPT -A INPUT -i \$VM_DYN_IF -p tcp -m tcp --sport 80 -j ACCEPT
 
 # Allow NAT - this is filtered with EBTABLES - check /etc/init.d/lima-eb-firewall
 \$IPT -A FORWARD -i \$VM_DYN_IF -o \$EXT_IF -j ACCEPT
