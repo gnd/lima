@@ -133,33 +133,32 @@ virsh net-undefine default
 
 # Create the dynamic network
 echo "Creating lima-dynamic network"
-echo "
-<network>
+echo "<network>
   <name>lima-dynamic</name>
   <bridge name='dyn0' stp='on' delay='0'/>
   <forward mode='open'/>
   <ip address='10.10.20.1' netmask='255.255.255.0'>
-    <dhcp>
-      <range start='10.10.20.11' end='10.10.20.99'/>
-    </dhcp>
   </ip>
-</network>
-" > $ROOTDIR/pool/networks/dyn0.xml
+</network>" > $ROOTDIR/pool/networks/dyn0.xml
 
 # Create the static network
 echo "Creating lima-static network"
-echo "
-<network>
+echo "<network>
   <name>lima-static</name>
   <bridge name='sta0' stp='on' delay='0'/>
   <forward mode='open'/>
   <ip address='10.10.10.1' netmask='255.255.255.0'>
-    <dhcp>
-      <range start='10.10.10.11' end='10.10.10.99'/>
-    </dhcp>
   </ip>
-</network>
-" > $ROOTDIR/pool/networks/sta0.xml
+</network>" > $ROOTDIR/pool/networks/sta0.xml
+
+# Create a helper network def for changing bridges
+echo "Adding change-bridge.xml"
+echo "<interface type='bridge'>
+  <mac address='VM_MAC'/>
+  <source bridge='VM_BRIDGE'/>
+  <target dev='VM_IFACE'/>
+  <model type='virtio'/>
+</interface>" > $ROOTDIR/pool/networks/change-bridge.xml
 
 # Enable the network
 echo "Enabling lima-dynamic"
