@@ -2,7 +2,7 @@
 #
 # This deletes a VM from the whole system. Use carefully
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 #######################################################################
 
@@ -13,9 +13,15 @@ usage() {
 	printf "$0 <name VM_NAME> \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 DATUM=`/bin/date +%D|sed 's/\//_/g'`
 
 ### VM specified

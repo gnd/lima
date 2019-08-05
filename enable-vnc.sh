@@ -6,7 +6,7 @@
 #	in open connections remaining, but disables new
 #	connections to be made
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 #######################################################################
 

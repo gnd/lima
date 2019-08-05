@@ -2,13 +2,19 @@
 #
 # This stops the default template
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ## Make sure the default instance is running
 CHECK=`virsh list --all|grep default`

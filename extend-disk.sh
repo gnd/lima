@@ -3,11 +3,11 @@
 # This extends the VM's disk by the given size
 #
 #       It works by adding an additional qcow2 image file
-#       as a nev disk to the machine and using it to 
+#       as a nev disk to the machine and using it to
 #       extend the machine's LVM. The disks can be added
 #	until the letter z (disk vdz) is reached ;)
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 #######################################################################
 
@@ -17,9 +17,15 @@ usage() {
         printf "$0 <name> <size>\n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 # Check if parameter given
 if [[ -z $1 ]]; then
@@ -63,7 +69,7 @@ echo "Last drive letter is $CURR"
 
 # Determine next letter
 echo "Setting the next drive letter"
-if [[ ! $CURR == "z" ]]; then 
+if [[ ! $CURR == "z" ]]; then
 	NXT=`for k in {a..z}; do echo -n $k; done | sed "s/.*$CURR//g"` # LOL !
 	NXT=${NXT:0:1}
 	echo "Next drive letter is $NXT"

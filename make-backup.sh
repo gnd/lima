@@ -2,13 +2,19 @@
 #
 # This creates a encrypted backup of all the VMs in vmlist
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 #############################################################
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 DATUM=`/bin/date +%D|sed 's/\//_/g'`
 
 usage() {
@@ -60,7 +66,7 @@ backup_default() {
 clean_conf() {
 	# Delete all files named conf_*.gpg older then CONF_RETENTION days
 	echo "Cleaning up configuration backups older than $CONF_RETENTION days.."
-	find $BUP_DIR -type f -name "conf_*.gpg" -mtime +$CONF_RETENTION -exec rm {} \; 
+	find $BUP_DIR -type f -name "conf_*.gpg" -mtime +$CONF_RETENTION -exec rm {} \;
 }
 
 clean_default() {
@@ -140,7 +146,7 @@ case "$1" in
 		backup_default
 
 		# Dynamic & static weekly backup
-		IFS=$'\n'   
+		IFS=$'\n'
 		for LINE in `cat $VM_LIST|grep -v dummy`
 		do
 			VM_NAME=`echo $LINE|awk {'print $2;'}`
@@ -169,10 +175,10 @@ case "$1" in
 			VM_TYPE=`echo $LINE|awk {'print $5;'}`
 			if [[ $VM_TYPE == "dyn" ]]; then
 				VM_TYPE="dynamic"
-			fi      
+			fi
 			if [[ $VM_TYPE == "sta" ]]; then
 				VM_TYPE="static"
-			fi      
+			fi
 			backup $VM_NAME $VM_TYPE $BU_TYPE
 		done
 	;;

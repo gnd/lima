@@ -10,7 +10,7 @@
 #	The inbound connections are served through a proxy server
 #	like Nginx or Apache
 #
-#	gnd @ gnd.sk, 2017
+#	gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 

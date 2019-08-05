@@ -2,13 +2,19 @@
 #
 # This starts the given VM
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ### waits until conection to new VM established
 connect-ssh() {
@@ -83,7 +89,7 @@ else
     if [[ $VM_TYPE == "sta" ]]; then
         VM_TYPE_DIR="static"
     fi
-    
+
     ### Start the VM
     echo "Starting $VM_NAME"
     virsh create $VM_DIR/$VM_TYPE_DIR/$VM_NAME/vm.xml
@@ -91,7 +97,7 @@ else
     ### Wait for the VM to come up
     if [[ $3 != "quiet" ]]; then
         connect-ssh $VM_IP $VM_NAME
-    else 
+    else
         sleep 1
     fi
 

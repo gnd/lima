@@ -3,7 +3,7 @@
 # This shows lists all VMs in vmlist and their info
 #
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 
@@ -13,9 +13,15 @@ usage() {
 	printf "$0 \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 # Print VM info
 IFS=$'\n'
@@ -25,13 +31,13 @@ touch $TMPFILE
 chmod 600 $TMPFILE
 echo -e "Name,Type,IP,Interface,VNC port,SSH port,URL,Internet,VM state,Location in /data/pool/vms,Last backup" > $TMPFILE
 for LINE in `cat $VM_LIST|grep -v dummy`
-do	
+do
 	# Parse VM data
 	VM_IFACE=`echo $LINE|awk {'print $1;'}`
 	VM_NAME=`echo $LINE|awk {'print $2;'}`
 	VM_IP=`echo $LINE|awk {'print $3;'}`
 	VM_VNC=`echo $LINE|awk {'print $4;'}`
-	VM_TYPE=`echo $LINE|awk {'print $5;'}`	
+	VM_TYPE=`echo $LINE|awk {'print $5;'}`
 	VM_PROXY=`echo $LINE|awk {'print $6;'}`
 	if [[ $VM_TYPE == "sta" ]]; then
 		VM_TYPE="static"
@@ -43,7 +49,7 @@ do
 	# Get port forwards for the VM
 	FWD_LINS=`cat $FWD_LIST|grep " $VM_IP "|wc -l`
 	if [[ $FWD_LINS == "1" ]]; then
-		FWD_PORT=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $1;'}` 
+		FWD_PORT=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $1;'}`
 		FWD_ON=`cat $FWD_LIST|grep " $VM_IP "|awk {'print $3;'}`
 	fi
 
@@ -79,7 +85,7 @@ do
 
 	# Check if VM is running
 	VIR_LINS=`virsh list|grep " $VM_NAME "|wc  -l`
-	
+
 	# Check if VM is on disk
 	VM_ONDISK=0
 	if [[ -d $VM_DIR"/"$VM_TYPE"/"$VM_NAME ]]; then
@@ -93,7 +99,7 @@ do
 	if [[ "$VM_TYPE" == "dynamic" ]]; then
 		VM_BACKUP=`find $BUP_DIR -type f -name "dynamic_[daily|weekly|monthly]*"$VM_NAME"*.gpg" -exec ls -l --time-style="+%d.%m.%Y" {} \;|tail -1|awk {'print $6;'}`
 	fi
-	if [[ -z "$VM_BACKUP" ]]; then 
+	if [[ -z "$VM_BACKUP" ]]; then
 		VM_BACKUP="!!! none !!!"
 	fi
 
@@ -145,7 +151,7 @@ do
 			echo -n "allowed," >> $TMPFILE
 		fi
 	fi
-		
+
 	# Print running state
 	if [[ $VIR_LINS -gt 0 ]]; then
 		echo -n "running," >> $TMPFILE
@@ -161,7 +167,7 @@ do
 	fi
 
 	# Print last backup
-	echo $VM_BACKUP >> $TMPFILE 
+	echo $VM_BACKUP >> $TMPFILE
 done
 
 # Print all to console

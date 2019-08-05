@@ -2,7 +2,7 @@
 #
 # This creates a apache vhost for a given VM
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 
@@ -13,6 +13,13 @@ usage() {
 	printf "$0 new <VM_IP> \n\n"
 }
 
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
+
 #  SOME INPUT VAR
 if [[ -z $2 ]]; then
 	usage
@@ -22,8 +29,7 @@ else
 fi
 
 # Define globals
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 DATUM=`date +%D|sed 's/\//_/g'`
 FOLDER=0
 SUBDOMAIN="0"
@@ -35,7 +41,7 @@ LINS=`cat $VM_LIST | awk {'print $3;'}|grep $VM_IP|wc -l`
 if [[ $LINS -lt 1 ]]; then
 	echo "No such ip $IP found"
 	exit
-fi      
+fi
 if [[ $LINS -gt 1 ]]; then
 	echo "More ips found, please be specific:"
 	cat $VM_LIST | awk {'print $3;'}|grep $IP
@@ -56,9 +62,9 @@ if [[ $VM_PROXY == "folder" ]] || [[ $VM_PROXY == "vhost" ]]; then
 	fi
 fi
 
-# Is this a domain ?	
+# Is this a domain ?
 read -p "Should this machine be accessible via a separate [d]omain or a [f]older on Arthost ? [d/f]: " ANS
-if [[ "$ANS" == "d" ]]; then 
+if [[ "$ANS" == "d" ]]; then
 
 	if [[ $VM_PROXY == "vhost" ]]; then
 		echo "This machine already has a vhost, please update it manually. Exiting."
@@ -145,7 +151,7 @@ if [[ "$ANS" == "d" ]]; then
 	echo "If u wish to update $DOMAIN apache config do: vi "$APACHE_VHOST_DIR"/"$DOMAIN".conf"
 fi
 
-### This is a folder 
+### This is a folder
 if [[ "$ANS" == "f" ]]; then
 
 	if [[ "$VM_PROXY" == "folder" ]]; then
@@ -165,7 +171,7 @@ if [[ "$ANS" == "f" ]]; then
 
 	echo "" >> $PRX_LIST
 	echo "### Proxy for $VM_IP" >> $PRX_LIST
-	echo "ProxyPass /$FOLDER_NAME http://$VM_IP:80/" >> $PRX_LIST 
+	echo "ProxyPass /$FOLDER_NAME http://$VM_IP:80/" >> $PRX_LIST
 	echo "ProxyPassReverse /$FOLDER_NAME http://$VM_IP:80/" >> $PRX_LIST
 
 	echo "Restarting apache"

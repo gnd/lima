@@ -2,13 +2,20 @@
 #
 # This creates a new VM instance from the default template
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 
 # we leave cmd args for later ..
 # move all into functions and make a main()
 # address reuse
+
+# Check if LIMA_ROOT set
+if [ -z $LIMA_ROOT ]; then
+	echo "Cant find LIMA. Please check if the install finished correctly."
+	echo "Exiting. Reason: LIMA_ROOT not set."
+	exit
+fi
 
 # Define globals
 WAIT="30"			# how long to wait before first connection
@@ -20,8 +27,7 @@ USER="livmusr"
 USER_USED=0
 PORT_FWD_USED=0
 VM_PROXY="none"
-CONF_DIR='/data/pool/vms'
-source $CONF_DIR/settings
+source $LIMA_ROOT/vms/settings
 
 ### If input arguments provided
 if [[ ! -z "$1" ]]; then
@@ -264,6 +270,7 @@ if [[ "$ANS" == "y" ]]; then
 fi
 
 ### Final reboot
+virsh autostart $VM_NAME
 virsh reboot $VM_NAME
 connect-ssh $VM_IP $VM_NAME
 echo ""

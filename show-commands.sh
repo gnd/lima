@@ -2,7 +2,7 @@
 #
 # This shows all available commands to control the VM pool
 #
-#       gnd @ gnd.sk, 2017
+#       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
 clear
