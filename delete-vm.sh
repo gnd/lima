@@ -53,8 +53,26 @@ esac
 read -p "This will delete all the data for the VM $VM_NAME. Do you wish to proceed ? [y/n]: " ANS
 if [[ $ANS == "y" ]]; then
 
+	# build arguments for tar
+	ARGS=""
+	if [ -f $VM_DIR/vmlist ]; then
+		ARGS=$VM_DIR/vmlist
+	fi
+	if [ -f $VM_DIR/static.allowed ]; then
+		ARGS="$ARGS $VM_DIR/static.allowed"
+	fi
+	if [ -f $VM_DIR/dynamic.banned ]; then
+		ARGS="$ARGS $VM_DIR/dynamic.banned"
+	fi
+	if [ -f $VM_DIR/proxies.conf ]; then
+		ARGS="$ARGS $VM_DIR/proxies.conf"
+	fi
+	if [ -f $VM_DIR/ssh-forwards ]; then
+		ARGS="$ARGS $VM_DIR/ssh-forwards"
+	fi
+
 	# create conf file backup
-	tar -cf /data/backup/temp/conf_$DATUM.tar $VM_DIR/vmlist $VM_DIR/static.allowed $VM_DIR/dynamic.banned $VM_DIR/proxies.conf $VM_DIR/forwards
+	tar -cf /data/backup/temp/conf_$DATUM.tar $ARGS
 
 	# destroy from libvirtd
 	virsh destroy $VM_NAME

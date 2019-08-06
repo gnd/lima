@@ -188,7 +188,7 @@ virsh net-start lima-static
 touch $ROOTDIR/pool/vms/static.allowed
 touch $ROOTDIR/pool/vms/dynamic.banned
 touch $ROOTDIR/pool/vms/proxies.conf
-touch $ROOTDIR/pool/vms/forwards
+touch $ROOTDIR/pool/vms/ssh-forwards
 
 # Extending the firewall
 shopt -s extglob
