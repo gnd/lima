@@ -140,8 +140,13 @@ do
 		echo -n $SERVER_URL/$PRX_DIR, >> $TMPFILE
 	fi
 	if [[ $VM_PROXY == "vhost" ]]; then
-		PRX_VHOST_SHORT=$(echo $PRX_VHOST|cut -c -15)
-		echo -n "http://$PRX_VHOST_SHORT..," >> $TMPFILE
+		PRX_VHOST_LEN=$(echo $PRX_VHOST|awk {'print length;'})
+		if [[ $PRX_VHOST_LEN -gt 20 ]]; then
+			PRX_VHOST_SHORT=$(echo $PRX_VHOST|cut -c -18)".."
+		else
+			PRX_VHOST_SHORT=$PRX_VHOST
+		fi
+		echo -n "http://$PRX_VHOST_SHORT," >> $TMPFILE
 	fi
 	if [[ $VM_PROXY == "both" ]]; then
 		echo -n "http://$PRX_VHOST & $SERVER_URL/$PRX_DIR," >> $TMPFILE
