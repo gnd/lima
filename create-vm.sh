@@ -266,7 +266,7 @@ if [[ "$ANS" == "y" ]]; then
 	ssh $DEFAULT_IP "echo $USER:$PASS | chpasswd"
 	ssh $DEFAULT_IP "chage -d 0 $USER"
 	ssh $DEFAULT_IP "usermod -g sudo $USER"
-	ssh $DEFAULT_IP "sed -i 's/AllowUsers.*/$USERSTRING/g'"
+	ssh $DEFAULT_IP "sed -i 's/AllowUsers.*/$USERSTRING/g' /etc/ssh/sshd_config"
 	USER_USED=1
 fi
 
