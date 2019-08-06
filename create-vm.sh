@@ -172,7 +172,17 @@ fi
 
 ### Determine VM parameters
 if [[ -f $VM_LIST ]]; then
-	VM_SUBNET=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed "s/$VM_TYPE_ABR-//g" |  sed 's/-.*$//g'`
+	LINES=$(cat $VM_LIST | grep $VM_TYPE_ABR|wc -l)
+	if [[ $LINES -gt 0 ]]; then
+		VM_SUBNET=`cat $VM_LIST | grep $VM_TYPE_ABR | tail -1 | awk {'print $1;'} | sed "s/$VM_TYPE_ABR-//g" |  sed 's/-.*$//g'`
+	else
+		# This is the first VM of this type
+		if [[ $VM_TYPE == "static" ]]; then
+			VM_SUBNET='10'
+		else
+			VM_SUBNET='20'
+		fi
+	fi
 	VM_INDEX=`$SCRIPT_DIR"/ipgen.py" $VM_TYPE $VM_LIST`
 	VM_VNC=`$SCRIPT_DIR"/vncgen.py" $VM_LIST`
 else
