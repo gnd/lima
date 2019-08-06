@@ -106,7 +106,7 @@ do
 	fi
 
 	# Now print allo
-	VM_NAME_SHORT=$(echo $VM_NAME|cut -c -15)
+	VM_NAME_SHORT=$(echo $VM_NAME|cut -c -25)
 	echo -n "$VM_NAME_SHORT"..",$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
 
 	# Print data about SSH port forwards
@@ -165,7 +165,7 @@ do
 
 	# Print disk state
 	if [[ $VM_ONDISK -gt 0 ]]; then
-		echo -n $VM_TYPE"/"$VM_NAME_SHORT"/," >> $TMPFILE
+		echo -n $VM_TYPE"/"$VM_NAME_SHORT"../," >> $TMPFILE
 	else
 		echo -n "missing," >> $TMPFILE
 	fi
