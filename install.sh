@@ -345,6 +345,7 @@ echo "Adding rules into ebtables"
 /etc/init.d/lima-eb-firewall
 
 # Add firewall into startup script
+# TODO create new chains for lima and flush them on reload
 echo "Adding firewalls into /etc/rc.local:"
 echo "Do you wish to do this manually ?"
 select opt in yes no
@@ -354,10 +355,11 @@ do
 			echo "Please add:
 					- /etc/init.d/lima-eb-firewall
 					- /etc/init.d/lima-firewall
-				  To your preferred startu script."
+				  To your preferred startup script."
 			break
 			;;
 		'no')
+            read -p "Please provide the location of the system firewall script (leave empty if none):"$'\n' osfw
 			echo "/etc/init.d/lima-firewall &" >> /etc/rc.local
 			echo "/etc/init.d/lima-eb-firewall &" >> /etc/rc.local
 			echo "Done adding firewall scripts into /etc/rc.local"
@@ -374,26 +376,27 @@ read -p "Please provide the server domain (eg. example.com):"$'\n' fqdn
 echo "Creating config file"
 echo "
 ### Directory settings
-VM_DIR=$ROOTDIR'/pool/vms'							# where the vms reside
-CONF_DIR=\$VM_DIR									# where the vmlist & conf files reside
-SCRIPT_DIR=$ROOTDIR'/pool'							# where the scripts reside
-VM_LIST=\$CONF_DIR'/vmlist'							# vmlist vm text database
-FWD_LIST=\$CONF_DIR'/forwards'						# port forvards text database
-PRX_LIST=\$CONF_DIR'/proxies.conf'					# apache proxy folders text database
+VM_DIR=\"$ROOTDIR/pool/vms\"							# where the vms reside
+CONF_DIR=\"\$VM_DIR\"									# where the vmlist & conf files reside
+SCRIPT_DIR=\"$ROOTDIR/pool\"		      				# where the scripts reside
+VM_LIST=\"\$CONF_DIR/vmlist\"							# vmlist vm text database
+FWD_LIST=\"\$CONF_DIR/forwards\"						# port forvards text database
+PRX_LIST=\"\$CONF_DIR/proxies.conf\"					# apache proxy folders text database
 
 ### Netvork settings
-EXT_IF='$if'										# this is the internet-facing interface
-EXT_IP='$ext_ip'									# IP of the external interface
-SERVER_FQDN='$fqdn'									# server domain name
-SERVER_URL='$fqdn'									# server URL
-IPFW='/etc/init.d/lima-firewall'					# location of the iptables firevall script
-EBFW='/etc/init.d/lima-eb-firewall'					# location of the ebtables firevall script
-APACHE_VHOST_DIR='/etc/apache2/sites-available/'	# location of apache2 vhost definitions (sites-available)
-APACHE_ERRORLOG='/var/log/apache2/error_log'		# apache2 error log
-DEFAULT_IP='10.10.10.10'							# IP of the default VM
+EXT_IF='$if'                                            # this is the internet-facing interface
+EXT_IP='$ext_ip'                                        # IP of the external interface
+SERVER_FQDN='$fqdn'                                     # server domain name
+SERVER_URL='$fqdn'                                      # server URL
+OSFW='$osfw'                                            # location of the system firewall script
+IPFW='/etc/init.d/lima-firewall'                        # location of the lima ptables firewall script
+EBFW='/etc/init.d/lima-eb-firewall'                     # location of the lim ebtables firewall script
+APACHE_VHOST_DIR='/etc/apache2/sites-available/'        # location of apache2 vhost definitions (sites-available)
+APACHE_ERRORLOG='/var/log/apache2/error_log'            # apache2 error log
+DEFAULT_IP='10.10.10.10'                                # IP of the default VM
 
 ### Backup settings
-BUP_DIR=''                                          # where the backups are stored
+BUP_DIR=\"$ROOTDIR/backup\"                         # where the backups are stored
 DEL_RETENTION="30"                                  # how many days to keep deleted vms
 CONF_RETENTION="30"                                 # how many days to keep configuration backups
 DEFAULT_RETENTION="30"                              # how many days to keep default vm backups

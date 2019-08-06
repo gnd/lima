@@ -11,6 +11,7 @@ EXT_IF=''                                           # this is the internet-facin
 EXT_IP=''                                           # IP of the external interface
 SERVER_FQDN=''                                      # server domain name
 SERVER_URL=''                                       # server URL
+OSFW=''                                             # location of the system firewall script
 IPFW=''                                             # location of the iptables firevall script
 EBFW=''                                             # location of the ebtables firevall script
 APACHE_VHOST_DIR='/etc/apache2/sites-available/'    # location of apache2 vhost definitions (sites-available)

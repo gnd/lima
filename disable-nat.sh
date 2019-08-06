@@ -104,7 +104,7 @@ if [[ "$TYPE" == "sta" ]]; then
 	else
 		echo "Disabling static interface $IFACE"
 		sed -i "/$IFACE/d" $VM_DIR/static.allowed
-		$EBFW
+        $EBFW
 		exit
 	fi
 fi

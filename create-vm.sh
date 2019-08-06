@@ -304,7 +304,11 @@ if [[ "$ANS" == "y" ]]; then
 	$SCRIPT_DIR/add-apache-vhost.sh new $VM_IP
 fi
 
-### Run updated firewall
+# Reload the system firewall
+if [ -z $OSFW ]; then
+	$($OSFW)
+fi
+# Reload the lima firewall
 $($IPFW)
 
 ### Final reboot
