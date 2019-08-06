@@ -305,7 +305,7 @@ if [[ "$ANS" == "y" ]]; then
 fi
 
 # Reload the system firewall
-if [ -z $OSFW ]; then
+if [ ! -z $OSFW ]; then
 	$($OSFW)
 fi
 # Reload the lima firewall

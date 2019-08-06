@@ -239,10 +239,12 @@ sysctl -w net.ipv4.ip_forward=1
 
 # Disallow VNC to any other machines on the loopback interface
 if [ -f $ROOTDIR/pool/vms/vmlist ]; then
+        OLDIFS=\$IFS
         IFS=$'\n'
         for VNC_PORT in \$(cat $ROOTDIR/pool/vms/vmlist|awk {'print \$4;'}); do
                 \$IPT -A INPUT -i lo -p tcp -m tcp --dport \$VNC_PORT -j DROP
         done
+        IFS=\$OLDIFS
 fi
 
 ##### ---- static bridge rules ---- #####
@@ -283,6 +285,7 @@ if [ -f $ROOTDIR/pool/vms/ssh-forwards ]; then
                 \$IPT -A FORWARD -p tcp -d \$VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
                 \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
         done
+        IFS=\$OLDIFS
 fi
 " > /etc/init.d/lima-firewall
 chmod 700 /etc/init.d/lima-firewall
