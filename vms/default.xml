@@ -4,8 +4,8 @@
     <type arch='x86_64' machine='pc'>hvm</type>
     <boot dev='hd'/>
     <boot dev='cdrom'/>
-    <bootmenu enable='yes' timeout='3000'/>
-    <bios useserial='yes' rebootTimeout='3000'/>
+    <bootmenu enable='no' timeout='0'/>
+    <bios useserial='no' rebootTimeout='0'/>
   </os>
   <vcpu placement='static'>1</vcpu>
   <memory unit="MiB">2048</memory>
@@ -50,7 +50,7 @@
       <source bridge='sta0'/>
       <target dev='VM_IFACE'/>
       <model type='virtio'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+      <rom bar='off'/>
     </interface>
     <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>

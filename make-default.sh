@@ -53,6 +53,7 @@ echo "Creating directory $VM_DIR/default/$VM_NAME"
 mkdir $VM_DIR/default/$VM_NAME
 echo "Copying files .."
 cp -pr $VM_DIR/default.xml $VM_DIR/default/$VM_NAME/vm.xml
+cp -pr $VM_DIR/default.xml $VM_DIR/default/$VM_NAME/default.xml
 
 # Overwrite the disk file
 /usr/bin/qemu-img create -f qcow2 $VM_DIR/default/$VM_NAME/disk-a.img $DEFAULT_SIZE"G"
