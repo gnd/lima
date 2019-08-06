@@ -139,6 +139,10 @@ alias make-backup='$ROOTDIR/pool/make-backup.sh'
 alias make-default='$ROOTDIR/pool/make-default.sh'
 alias start-default='$ROOTDIR/pool/start-default.sh'
 alias stop-default='$ROOTDIR/pool/stop-default.sh'
+alias start-all-vm='$ROOTDIR/pool/start-all.sh'
+alias stop-all-vm='$ROOTDIR/pool/stop-all.sh'
+alias start-vm='$ROOTDIR/pool/start-vm.sh'
+alias stop-vm='$ROOTDIR/pool/stop-vm.sh'
 " >> /root/.bashrc
 
 # Prepare for networking

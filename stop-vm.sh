@@ -27,10 +27,6 @@ usage() {
 case "$1" in
 	'name')
 		VM_NAME=$2
-        if [[ $VM_NAME == "dummy" ]]; then
-            printf "\n$0: Cant stop dummy\n\n"
-			exit
-        fi
 		LINS=`cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
 			printf "\n$0: No such name $VM_NAME found\n\n"
