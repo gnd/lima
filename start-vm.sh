@@ -28,13 +28,15 @@ connect-ssh() {
 
 	while [[ "$con" == "0" ]]; do
 		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no $ip hostname`
+		sleep 1
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
-			tries=$((tries+1))
-			for (( try=1; try<=tries; try=try+1 )); do
-				printf "Waiting for VM: "$tries"s "; draw_tries
-				clean_line
-			done
+            tries=$((tries+1))
+			draw_tries=$((tries % 100))
+            for (( try=1; try<=draw_tries; try=try+1 )); do
+                printf "Waiting for VM: "$tries"s "; draw_tries
+                clean_line
+            done
 		else
 			con=1
 			printf "\n\nVM up ! "
@@ -53,10 +55,6 @@ usage() {
 case "$1" in
 	'name')
 		VM_NAME=$2
-        if [[ $VM_NAME == "dummy" ]]; then
-            printf "\n$0: Cant start dummy\n\n"
-			exit
-        fi
 		LINS=`cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
 			printf "\n$0: No such name $VM_NAME found\n\n"

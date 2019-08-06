@@ -24,7 +24,7 @@ usage() {
 }
 
 ### Start all VMS from vmlist
-for VM_NAME in `cat $VM_LIST | awk {'print $2;'}|grep -v dummy`
+for VM_NAME in `cat $VM_LIST | awk {'print $2;'}`
 do
     if [[ $1 == "quiet" ]]; then
         $SCRIPT_DIR/start-vm.sh name $VM_NAME quiet

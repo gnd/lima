@@ -24,7 +24,7 @@ usage() {
 }
 
 ### Stop all running VMS from vmlist
-for VM_NAME in `cat $VM_LIST | awk {'print $2;'}|grep -v dummy`
+for VM_NAME in `cat $VM_LIST | awk {'print $2;'}`
 do
     $SCRIPT_DIR/stop-vm.sh name $VM_NAME
 done
