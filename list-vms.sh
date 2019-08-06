@@ -106,8 +106,12 @@ do
 	fi
 
 	# Now print allo
-	VM_NAME_SHORT=$(echo $VM_NAME|cut -c -25)
-	echo -n "$VM_NAME_SHORT"..",$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
+	VM_NAME_LEN=$(echo $VM_NAME|awk {'print length;'})
+	if [ $VM_NAME_LEN -gt 25 ];
+		VM_NAME_SHORT=$(echo $VM_NAME|cut -c -25)".."
+	else
+		VM_NAME_SHORT=VM_NAME
+	echo -n "$VM_NAME_SHORT,$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
 
 	# Print data about SSH port forwards
 	if [[ $FWD_LINS -lt "1" ]]; then
