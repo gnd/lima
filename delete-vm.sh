@@ -80,12 +80,12 @@ if [[ $ANS == "y" ]]; then
 	# remove from pool
 	if [[ $VM_TYPE == "dyn" ]]; then
 		echo "Deleting dynamic VM $VM_NAME from disk"
-		mv $VM_DIR/dynamic/$VM_NAME /data/backup/temp/vms/dynamic/$VM_NAME"_"$DATUM
+		mv $VM_DIR/dynamic/$VM_NAME "/data/backup/temp/vms/dynamic/deleted_"$VM_NAME"_"$DATUM
 
 	fi
 	if [[ $VM_TYPE == "sta" ]]; then
 		echo "Deleting static VM $VM_NAME from disk"
-	        mv $VM_DIR/static/$VM_NAME /data/backup/temp/vms/static/$VM_NAME"_"$DATUM
+	        mv $VM_DIR/static/$VM_NAME "/data/backup/temp/vms/static/deleted_"$VM_NAME"_"$DATUM
 	fi
 
 	# remove from firewalls
