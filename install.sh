@@ -211,7 +211,7 @@ done
 
 echo "Extending the firewall"
 ext_ip=`ifconfig|grep $if -A 2|grep "inet "|awk {'print $2;'}`
-echo "#!/bin/sh
+echo "#!/bin/bash
 # Define variables
 IPT=/sbin/iptables
 EXT_IF=$if
@@ -239,12 +239,10 @@ sysctl -w net.ipv4.ip_forward=1
 
 # Disallow VNC to any other machines on the loopback interface
 if [ -f $ROOTDIR/pool/vms/vmlist ]; then
-        OLDIFS=\$IFS
         IFS=$'\n'
         for VNC_PORT in \$(cat $ROOTDIR/pool/vms/vmlist|awk {'print \$4;'}); do
                 \$IPT -A INPUT -i lo -p tcp -m tcp --dport \$VNC_PORT -j DROP
         done
-        IFS=\$OLDIFS
 fi
 
 ##### ---- static bridge rules ---- #####
@@ -278,14 +276,13 @@ if [ -f $ROOTDIR/pool/vms/ssh-forwards ]; then
         IFS=$'\n'
         for LINE in \$(cat $ROOTDIR/pool/vms/ssh-forwards | grep ON); do
                 EXT_PORT=\$(echo \$LINE|awk {'print \$1;'})
-                VM_IP=\$(echo LINE|awk {'print \$2;'})
+                VM_IP=\$(echo \$LINE|awk {'print \$2;'})
 
                 echo \"Adding forward from \$EXT_IP:\$EXT_PORT to \$VM_IP:22\"
                 \$IPT -t nat -A PREROUTING -p tcp -i \$EXT_IF --dport \$EXT_PORT -j DNAT --to-destination \$VM_IP:22
                 \$IPT -A FORWARD -p tcp -d \$VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
                 \$IPT -A INPUT -i \$EXT_IF -p tcp -d \$EXT_IP --dport \$EXT_PORT -m state --state NEW -j ACCEPT
         done
-        IFS=\$OLDIFS
 fi
 " > /etc/init.d/lima-firewall
 chmod 700 /etc/init.d/lima-firewall
@@ -394,7 +391,7 @@ SERVER_URL='$fqdn'                                      # server URL
 OSFW='$osfw'                                            # location of the system firewall script
 IPFW='/etc/init.d/lima-firewall'                        # location of the lima ptables firewall script
 EBFW='/etc/init.d/lima-eb-firewall'                     # location of the lim ebtables firewall script
-APACHE_VHOST_DIR='/etc/apache2/sites-available/'        # location of apache2 vhost definitions (sites-available)
+APACHE_VHOST_DIR='/etc/apache2/sites-available'         # location of apache2 vhost definitions (sites-available)
 APACHE_ERRORLOG='/var/log/apache2/error_log'            # apache2 error log
 DEFAULT_IP='10.10.10.10'                                # IP of the default VM
 

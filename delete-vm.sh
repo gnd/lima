@@ -79,10 +79,10 @@ if [[ $ANS == "y" ]]; then
 		$SCRIPT_DIR/disable-nat.sh name $VM_NAME
 	fi
 
-	# remove from VM_PORT forward
-	if [[ -f $VM_DIR/forwards ]]; then
-		echo "Removing port forwards for VM $VM_NAME"
-		sed -i "/$VM_IP/d" $VM_DIR/forwards
+	# remove from SSH forwards
+	if [[ -f $VM_DIR/ssh-forwards ]]; then
+		echo "Removing SSH forwards for VM $VM_NAME"
+		sed -i "/$VM_IP/d" $VM_DIR/ssh-forwards
 		# Reload the system firewall
 		if [ ! -z $OSFW ]; then
 			$OSFW
