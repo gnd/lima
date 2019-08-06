@@ -29,7 +29,7 @@ RND=`openssl rand -hex 2`
 TMPFILE="/tmp/lvm_"$RND
 touch $TMPFILE
 chmod 600 $TMPFILE
-echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Internet,State,Location in /data/pool/vms,Backup" > $TMPFILE
+echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Net,State,Location in /data/pool/vms,Backup" > $TMPFILE
 for LINE in `cat $VM_LIST|grep -v dummy`
 do
 	# Parse VM data
@@ -109,8 +109,8 @@ do
 
 	# Now print allo
 	VM_NAME_LEN=$(echo $VM_NAME|awk {'print length;'})
-	if [[ $VM_NAME_LEN -gt 25 ]]; then
-		VM_NAME_SHORT=$(echo $VM_NAME|cut -c -25)".."
+	if [[ $VM_NAME_LEN -gt 30 ]]; then
+		VM_NAME_SHORT=$(echo $VM_NAME|cut -c -28)".."
 	else
 		VM_NAME_SHORT=$VM_NAME
 	fi
