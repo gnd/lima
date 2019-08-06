@@ -80,9 +80,11 @@ if [[ $ANS == "y" ]]; then
 	fi
 
 	# remove from VM_PORT forward
-	echo "Removing port forwards for VM $VM_NAME"
-	sed -i "/$VM_IP/d" $VM_DIR/forwards
-	$IPFW
+	if [[ -f $VM_DIR/forwards]]; then
+		echo "Removing port forwards for VM $VM_NAME"
+		sed -i "/$VM_IP/d" $VM_DIR/forwards
+		$($IPFW)
+	fi
 
 	# remove from proxies
 	RED='\033[0;31m'
