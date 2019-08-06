@@ -260,11 +260,13 @@ if [[ "$ANS" == "y" ]]; then
 	RND=`openssl rand -hex 2`
 	PASS=`openssl rand -hex 8`
 	USER=$USER$RND
+	USERSTRING="AllowUsers root $USER"
 	echo "Adding default user .."
 	ssh $DEFAULT_IP "useradd -m -s /bin/bash $USER"
 	ssh $DEFAULT_IP "echo $USER:$PASS | chpasswd"
 	ssh $DEFAULT_IP "chage -d 0 $USER"
 	ssh $DEFAULT_IP "usermod -g sudo $USER"
+	ssh $DEFAULT_IP "sed -i 's/AllowUsers.*/$USERSTRING/g'"
 	USER_USED=1
 fi
 
