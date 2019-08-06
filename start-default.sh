@@ -28,13 +28,15 @@ connect-ssh() {
 
 	while [[ "$con" == "0" ]]; do
 		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no $ip hostname`
+		sleep 1
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
-			tries=$((tries+1))
-			for (( try=1; try<=tries; try=try+1 )); do
-				printf "Waiting for VM: "$tries"s "; draw_tries
-				clean_line
-			done
+            tries=$((tries+1))
+			draw_tries=$((tries % 100))
+            for (( try=1; try<=draw_tries; try=try+1 )); do
+                printf "Waiting for VM: "$tries"s "; draw_tries
+                clean_line
+            done
 		else
 			con=1
 			printf "\n\nVM up ! "
@@ -42,14 +44,35 @@ connect-ssh() {
 	done
 }
 
+# Ask what default VM to use
+shopt -s extglob
+echo "Please select what default VM to start:"
+vms=`ls $VM_DIR/default/`
+opts=`echo $vms|sed 's/ /|/g'`
+opts=`echo "+($opts)"`
+select vm in $vms
+do
+        case $vm in
+        $vms)
+                echo "Choosing: $vm"
+                break
+                ;;
+        *)
+                echo "Invalid: $vm"
+                ;;
+        esac
+done
+DEF_VM=$vm
+
 ## Make sure the default instance is not running
 CHECK=`virsh list --all|grep default`
 if [[ ! -z $CHECK ]]; then
         echo "Default instance is already running."
+		echo "Exiting."
 else
 	### Start the default machine
-	echo "Starting the default virtual machine"
-	virsh create $VM_DIR/default/default.xml
+	echo "Starting the $DEF_VM virtual machine"
+	virsh create $VM_DIR/default/$DEF_VM/vm.xml
 
 	### Wait for the VM to come up
 	connect-ssh $DEFAULT_IP default
