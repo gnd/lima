@@ -84,11 +84,11 @@ if [[ $ANS == "y" ]]; then
 		echo "Removing port forwards for VM $VM_NAME"
 		sed -i "/$VM_IP/d" $VM_DIR/forwards
 		# Reload the system firewall
-		if [ -z $OSFW ]; then
-			$($OSFW)
+		if [ ! -z $OSFW ]; then
+			$OSFW
 		fi
 		# Reload the lima firewall
-		$($IPFW)
+		$IPFW
 	fi
 
 	# remove from proxies

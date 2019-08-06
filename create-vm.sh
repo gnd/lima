@@ -306,10 +306,10 @@ fi
 
 # Reload the system firewall
 if [ ! -z $OSFW ]; then
-	$($OSFW)
+	$OSFW
 fi
 # Reload the lima firewall
-$($IPFW)
+$IPFW
 
 ### Final reboot
 virsh reboot $VM_NAME
