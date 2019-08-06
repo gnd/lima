@@ -141,8 +141,8 @@ do
 	fi
 	if [[ $VM_PROXY == "vhost" ]]; then
 		PRX_VHOST_LEN=$(echo $PRX_VHOST|awk {'print length;'})
-		if [[ $PRX_VHOST_LEN -gt 20 ]]; then
-			PRX_VHOST_SHORT=$(echo $PRX_VHOST|cut -c -18)".."
+		if [[ $PRX_VHOST_LEN -gt 25 ]]; then
+			PRX_VHOST_SHORT=$(echo $PRX_VHOST|cut -c -23)".."
 		else
 			PRX_VHOST_SHORT=$PRX_VHOST
 		fi
