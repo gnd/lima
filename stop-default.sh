@@ -23,7 +23,7 @@ if [[ -z $CHECK ]]; then
 else
 	### Stop the default machine
 	echo "Stoping the default virtual machine"
-	virsh destroy default
-
+    DEF_VM=$(virsh list --all|grep default|awk {'print $2;'})
+	virsh destroy $DEF_VM
 	echo "Default instance has been stopped."
 fi
