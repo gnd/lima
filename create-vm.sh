@@ -224,6 +224,8 @@ if [[ $RES =~ "Failed" ]]; then
 	rm -rf $VM_DIR/$VM_TYPE/$VM_NAME
 	sed -i "/.*$VM_NAME.*/d" $VM_LIST
 	exit
+else
+	echo $RES
 fi
 
 ### Wait for the VM to come up
@@ -301,6 +303,9 @@ read -p "Create a Apache proxy for the machine ? [y/n]: " ANS
 if [[ "$ANS" == "y" ]]; then
 	$SCRIPT_DIR/add-apache-vhost.sh new $VM_IP
 fi
+
+### Run updated firewall
+$($IPFW)
 
 ### Final reboot
 virsh reboot $VM_NAME
