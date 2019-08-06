@@ -58,11 +58,12 @@ connect-ssh() {
 	clean_line() { printf "\r"; }
 
 	while [[ "$con" == "0" ]]; do
-		check=`ssh -q -o ConnectTimeout=10 -o StrictHostKeyChecking=no $ip hostname`
+		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no $ip hostname`
+		sleep 1
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
             tries=$((tries+1))
-			draw_tries=$((tries % 50))
+			draw_tries=$((tries % 100))
             for (( try=1; try<=draw_tries; try=try+1 )); do
                 printf "Waiting for VM: "$tries"s "; draw_tries
                 clean_line
