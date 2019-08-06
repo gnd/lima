@@ -29,7 +29,7 @@ RND=`openssl rand -hex 2`
 TMPFILE="/tmp/lvm_"$RND
 touch $TMPFILE
 chmod 600 $TMPFILE
-echo -e "Name,Type,IP,Interface,VNC port,SSH port,URL,Internet,VM state,Location in /data/pool/vms,Last backup" > $TMPFILE
+echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Internet,State,Location in /data/pool/vms,Backup" > $TMPFILE
 for LINE in `cat $VM_LIST|grep -v dummy`
 do
 	# Parse VM data
@@ -41,10 +41,12 @@ do
 	VM_PROXY=`echo $LINE|awk {'print $6;'}`
 	if [[ $VM_TYPE == "sta" ]]; then
 		VM_TYPE="static"
+		VM_TYPE_ABR="sta"
 	fi
 	if [[ $VM_TYPE == "dyn" ]]; then
-	VM_TYPE="dynamic"
-        fi
+		VM_TYPE="dynamic"
+		VM_TYPE_ABR="dyn"
+    fi
 
 	# Get port forwards for the VM
 	if [[ -f $FWD_LIST ]]; then
@@ -102,7 +104,7 @@ do
 		VM_BACKUP=`find $BUP_DIR -type f -name "dynamic_[daily|weekly|monthly]*"$VM_NAME"*.gpg" -exec ls -l --time-style="+%d.%m.%Y" {} \;|tail -1|awk {'print $6;'}`
 	fi
 	if [[ -z "$VM_BACKUP" ]]; then
-		VM_BACKUP="!!! none !!!"
+		VM_BACKUP="none !"
 	fi
 
 	# Now print allo
@@ -110,9 +112,9 @@ do
 	if [[ $VM_NAME_LEN -gt 25 ]]; then
 		VM_NAME_SHORT=$(echo $VM_NAME|cut -c -25)".."
 	else
-		VM_NAME_SHORT=VM_NAME
+		VM_NAME_SHORT=$VM_NAME
 	fi
-	echo -n "$VM_NAME_SHORT,$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
+	echo -n "$VM_NAME_SHORT,$VM_TYPE_ABR,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
 
 	# Print data about SSH port forwards
 	if [[ $FWD_LINS -lt "1" ]]; then
