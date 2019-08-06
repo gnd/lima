@@ -119,7 +119,7 @@ if [[ $ANS == "y" ]]; then
 	if [[ $PROXY == "vhost" ]]; then
 		FILE=`grep -l $VM_IP $APACHE_VHOST_DIR/*|tail -1`
 		if [[ ! -z $FILE ]]; then
-			printf "${RED}This VM has a separate apache vhost: $FILE. Please remove manually.${NC}\n"
+			printf "${RED}This VM has a separate apache vhost: $FILE . Please remove manually.${NC}\n"
 		else
 			printf "${RED}This VM might have a separate apache vhost. Please check & remove manually.${NC}\n"
 		fi
