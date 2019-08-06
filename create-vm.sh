@@ -81,6 +81,14 @@ if [[ ! `whoami` == "root" ]]; then
 	exit
 fi
 
+## Make sure the default instance is not running
+CHECK=`virsh list --all|grep default`
+if [[ ! -z $CHECK ]]; then
+	echo "Default instance is running."
+	echo "Run this script again after default is off."
+	exit
+fi
+
 ### Ask for VM type if not provided
 if [[ "$TYPE_OK" == "0" ]]; then
 	read -p "Is this a static or dynamic VM? [sta/dyn] " VM_TYPE
@@ -150,9 +158,9 @@ else
 			exit
 		fi
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
-                echo "Copying files .."
-                cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-                cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
+        echo "Copying files .."
+        cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+    	cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	else
 		echo "Creating directory $VM_DIR/$VM_TYPE/$VM_NAME"
 		mkdir $VM_DIR/$VM_TYPE/$VM_NAME
@@ -207,14 +215,10 @@ sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 
-### Spin up the new instance
-virsh create $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-
-## Make sure the default instance is not running
-CHECK=`virsh list --all|grep default`
-if [[ ! -z $CHECK ]]; then
-	echo "Default instance is running."
-	echo "Run this script again after default is off."
+### Try spin up the new instance
+RES=`virsh create $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml 2>&1`
+if [[ $RES =~ "Failed" ]]; then
+	echo $RES
 	echo "Reverting changes & destroying the new VM."
 	virsh destroy $VM_NAME
 	rm -rf $VM_DIR/$VM_TYPE/$VM_NAME
