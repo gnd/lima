@@ -105,8 +105,9 @@ do
 		VM_BACKUP="!!! none !!!"
 	fi
 
-	# Now print all
-	echo -n "$VM_NAME,$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
+	# Now print allo
+	VM_NAME_SHORT=$(echo $VM_NAME|cut -c -15)
+	echo -n "$VM_NAME_SHORT"...",$VM_TYPE,$VM_IP,$VM_IFACE,$VM_VNC," >> $TMPFILE
 
 	# Print data about SSH port forwards
 	if [[ $FWD_LINS -lt "1" ]]; then
@@ -132,7 +133,8 @@ do
 		echo -n $SERVER_URL/$PRX_DIR, >> $TMPFILE
 	fi
 	if [[ $VM_PROXY == "vhost" ]]; then
-		echo -n "http://$PRX_VHOST," >> $TMPFILE
+		PRX_VHOST_SHORT=$(echo $PRX_VHOST|cut -c 15)
+		echo -n "http://$PRX_VHOST_SHORT..," >> $TMPFILE
 	fi
 	if [[ $VM_PROXY == "both" ]]; then
 		echo -n "http://$PRX_VHOST & $SERVER_URL/$PRX_DIR," >> $TMPFILE
