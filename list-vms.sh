@@ -177,7 +177,7 @@ do
 
 	# Print disk state
 	if [[ $VM_ONDISK -gt 0 ]]; then
-		echo -n $VM_TYPE"/"$VM_NAME_SHORT"../," >> $TMPFILE
+		echo -n $VM_TYPE"/"$VM_NAME_SHORT"/," >> $TMPFILE
 	else
 		echo -n "missing," >> $TMPFILE
 	fi
