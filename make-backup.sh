@@ -5,6 +5,11 @@
 #       gnd @ gnd.sk, 2017 - 2019
 #
 #############################################################
+#TODO: setup the backup key in settings
+#TODO: check for backup key first
+#TODO: create backup directories in install
+#TODO: create backup key in install
+#TODO: check for backp directories first
 
 # Check if LIMA_ROOT set
 if [ -z $LIMA_ROOT ]; then
@@ -47,7 +52,7 @@ backup_conf() {
 	echo "Backing up the configuration files.."
 	TARNAME=$BUP_DIR"/conf_"$DATUM".tar"
 	GPGNAME=$BUP_DIR"/conf_"$DATUM".gpg"
-	nice tar -cf $TARNAME $VM_DIR/vmlist $VM_DIR/proxies.conf $VM_DIR/static.allowed $VM_DIR/dynamic.banned $VM_DIR/forwards
+	nice tar -cf $TARNAME $VM_DIR/vmlist $VM_DIR/proxies.conf $VM_DIR/static.allowed $VM_DIR/dynamic.banned $VM_DIR/ssh-forwards
 	nice gpg -r "lima backup" --output $GPGNAME --encrypt $TARNAME
 	chmod 600 $GPGNAME
 	rm $TARNAME
