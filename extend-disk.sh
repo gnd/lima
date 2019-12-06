@@ -14,7 +14,7 @@
 usage() {
         printf "\n"
         printf "Usage: \n"
-        printf "$0 <name> <size>\n\n"
+        printf "$0 <name> <size> (in GB)\n\n"
 }
 
 # Check if LIMA_ROOT set
@@ -29,12 +29,12 @@ source $LIMA_ROOT/vms/settings
 
 # Check if parameter given
 if [[ -z $1 ]]; then
-	usage
+    usage
 	exit
 fi
 if [[ -z $2 ]]; then
-        usage
-        exit
+    usage
+    exit
 fi
 
 # Check for the machine
@@ -132,4 +132,4 @@ ssh $VM_IP "vgextend default-vg /dev/vd"$NXT"1"
 ssh $VM_IP "pvscan"
 ssh $VM_IP "lvextend /dev/default-vg/root /dev/vd"$NXT"1"
 ssh $VM_IP "resize2fs /dev/default-vg/root"
-ssh $VM_IP "echo \"/dev/vd"$NXT"1\" >> /root/scripts/disks"
+#ssh $VM_IP "echo \"/dev/vd"$NXT"1\" >> /root/scripts/disks"
