@@ -15,9 +15,10 @@ usage() {
         printf "\n"
         printf "This command adds a new disk to the virtual machine. \n"
         printf "The disk is then added to the LVM, thus extending the existing disk capacity. \n"
+        printf "The size parameter should be the number of GB you need adding to the VM. \n"
         printf "\n"
         printf "Usage: \n"
-        printf "$0 <name> <new_size> (in GB) \n"
+        printf "$0 <name> <size> (in GB) \n"
         printf "\n"
 }
 
