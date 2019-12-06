@@ -57,7 +57,7 @@ echo ""
 echo -e "\033[1mmake-backup \033[0m- a backup script for the VMs. Usually run from /etc/crontab. Usage: make-backup [daily | weekly | monthly]"
 echo ""
 
-echo -e "\033[1mrestat-vm \033[0m- Restarts the given VM. Usage: restart-vm <name NAME> [quiet]"
+echo -e "\033[1mrestart-vm \033[0m- Restarts the given VM. Usage: restart-vm <name NAME> [quiet]"
 echo ""
 
 echo -e "\033[1mstart-all-vm \033[0m- Starts all VMs listed in vmlist. Usage: start-all-vm [quiet]"
