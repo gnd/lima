@@ -5,7 +5,7 @@
 #       It works by adding an additional qcow2 image file
 #       as a nev disk to the machine and using it to
 #       extend the machine's LVM. The disks can be added
-#	until the letter z (disk vdz) is reached ;)
+#       until the letter z (disk vdz) is reached ;)
 #
 #       gnd @ gnd.sk, 2017 - 2019
 #
@@ -13,8 +13,12 @@
 
 usage() {
         printf "\n"
+        printf "This command adds a new disk to the virtual machine. \n"
+        printf "The disk is then added to the LVM, thus extending the existing disk capacity. \n"
+        printf "\n"
         printf "Usage: \n"
-        printf "$0 <name> <size> (in GB)\n\n"
+        printf "$0 <name> <new_size> (in GB) \n"
+        printf "\n"
 }
 
 # Check if LIMA_ROOT set
