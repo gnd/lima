@@ -28,20 +28,20 @@ DATUM=`/bin/date +%D|sed 's/\//_/g'`
 case "$1" in
 	'name')
 		VM_NAME=$2
-		LINS=`cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME|wc -l`
+		LINS=`cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
 			echo "No such name $VM_NAME found"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
 			echo "More names found, please be specific:"
-			cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME
+			cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"
 			exit
 		fi
-		VM_PORT=`cat $VM_LIST | awk {'print $2" "$4;'}|grep $VM_NAME|awk {'print $2;'}`
-		VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep $VM_NAME|awk {'print $2;'}`
-		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep $VM_NAME|awk {'print $2;'}`
-		PROXY=`cat $VM_LIST | awk {'print $2" "$6;'}|grep $VM_NAME|awk {'print $2;'}`
+		VM_PORT=`cat $VM_LIST | awk {'print $2" "$4;'}|grep "^$VM_NAME "|awk {'print $2;'}`
+		VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep "^$VM_NAME "|awk {'print $2;'}`
+		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep "^$VM_NAME "|awk {'print $2;'}`
+		PROXY=`cat $VM_LIST | awk {'print $2" "$6;'}|grep "^$VM_NAME "|awk {'print $2;'}`
 	;;
 	*)
 		usage

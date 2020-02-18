@@ -135,7 +135,7 @@ done
 DEF_VM=$vm
 
 ### Check if VM already exists
-CHECK=`virsh list --all|grep $VM_NAME`
+CHECK=`virsh list --all|grep " $VM_NAME "`
 if [[ ! -z $CHECK ]]; then
 	read -p "VM $VM_NAME already running, do you wish to overwrite? [y/n]" ANS
 	if [[ ! "$ANS" == "y" ]]; then

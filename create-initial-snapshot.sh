@@ -32,19 +32,19 @@ fi
 
 # Identify machine
 VM_NAME=$1
-LINS=`cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME|wc -l`
+LINS=`cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"|wc -l`
 if [[ $LINS -lt 1 ]]; then
 	echo "No such name $VM_NAME found"
 	exit
 fi
 if [[ $LINS -gt 1 ]]; then
 	echo "More names found, please be specific:"
-	cat $VM_LIST | awk {'print $2;'}|grep $VM_NAME
+	cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"
 	exit
 fi
 
 # Identify VM type
-VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep $VM_NAME|awk {'print $2;'}`
+VM_TYPE=`cat $VM_LIST | awk {'print $2" "$5;'}|grep "^$VM_NAME "|awk {'print $2;'}`
 if [[ $VM_TYPE == "sta" ]]; then
 	VM_TYPE="static"
 fi

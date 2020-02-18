@@ -2,7 +2,7 @@
 #
 # This enables VNC connections from outside to the external IP and PORT
 #
-#       After 3 minutes the rule gets disabled. This results
+#   After 3 minutes the rule gets disabled. This results
 #	in open connections remaining, but disables new
 #	connections to be made
 #
@@ -40,7 +40,7 @@ case "$1" in
 			cat $VM_LIST | awk {'print $4;'}|grep $PORT
 			exit
 		fi
-		VM_IP=`cat $VM_LIST | awk {'print $4" "$3;'}|grep $NAME|awk {'print $2;'}`
+		VM_IP=`cat $VM_LIST | awk {'print $4" "$3;'}|grep $PORT|awk {'print $2;'}`
 		PORT=$2
 	;;
 	'iface')
@@ -55,23 +55,24 @@ case "$1" in
 			cat $VM_LIST | awk {'print $1;'}|grep $IFACE
 			exit
 		fi
-		VM_IP=`cat $VM_LIST | awk {'print $1" "$3;'}|grep $NAME|awk {'print $2;'}`
+		VM_IP=`cat $VM_LIST | awk {'print $1" "$3;'}|grep $IFACE|awk {'print $2;'}`
 		PORT=`cat $VM_LIST | awk {'print $1" "$4;'}|grep $IFACE|awk {'print $2;'}`
 	;;
 	'name')
-		NAME=$2
-		LINS=`cat $VM_LIST | awk {'print $2;'}|grep $NAME|wc -l`
+		VM_NAME=$2
+		LINS=`cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
-			echo "No such name $NAME found"
+			printf "\n$0: No such name $VM_NAME found\n\n"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
-			echo "More names found, please be specific:"
-			cat $VM_LIST | awk {'print $2;'}|grep $NAME
+			printf "\n$0: More names like '$VM_NAME' found, please be specific:\n"
+			cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"
+			printf "\n"
 			exit
 		fi
-		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep $NAME|awk {'print $2;'}`
-		PORT=`cat $VM_LIST | awk {'print $2" "$4;'}|grep $NAME|awk {'print $2;'}`
+		VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'}|grep "^$VM_NAME "|awk {'print $2;'}`
+		PORT=`cat $VM_LIST | awk {'print $2" "$4;'}|grep "^$VM_NAME "|awk {'print $2;'}`
 	;;
 	'ip')
 		IP=$2

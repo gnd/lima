@@ -27,14 +27,14 @@ usage() {
 case "$1" in
 	'name')
 		VM_NAME=$2
-		LINS=`cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"|wc -l`
+		LINS=`cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
 			printf "\n$0: No such name $VM_NAME found\n\n"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
 			printf "\n$0: More names like '$VM_NAME' found, please be specific:\n"
-			cat $VM_LIST | awk {'print $2;'}|grep -wF "$VM_NAME"
+			cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"
             printf "\n"
 			exit
 		fi
@@ -46,7 +46,7 @@ case "$1" in
 esac
 
 ### Check if the VM runs first
-CHECK=`virsh list --all|grep $VM_NAME`
+CHECK=`virsh list --all|grep " $VM_NAME "`
 if [[ -z $CHECK ]]; then
     printf "\n$0: Warning: $VM_NAME not running.\n"
 else
@@ -58,7 +58,7 @@ else
     sleep 1 # this is so arbitrary
 
     ### Check if successfull
-    CHECK=`virsh list --all|grep $VM_NAME`
+    CHECK=`virsh list --all|grep " $VM_NAME "`
     if [[ ! -z $CHECK ]]; then
         printf "$0: Warning: $VM_NAME still running.\n\n"
     fi

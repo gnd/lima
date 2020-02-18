@@ -32,7 +32,7 @@ source $LIMA_ROOT/vms/settings
 
 ### VM specified
 case "$1" in
-        'iface')
+    'iface')
 		IFACE=$2
 		LINS=`cat $VM_LIST | awk {'print $1;'}|grep $IFACE|wc -l`
 		if [[ $LINS -lt 1 ]]; then
@@ -46,19 +46,20 @@ case "$1" in
 		fi
 		IFACE=`cat $VM_LIST | awk {'print $1";'}|grep $IFACE`
 	;;
-        'name')
-		NAME=$2
-		LINS=`cat $VM_LIST | awk {'print $2;'}|grep $NAME|wc -l`
+    'name')
+		VM_NAME=$2
+		LINS=`cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"|wc -l`
 		if [[ $LINS -lt 1 ]]; then
-			echo "No such name $NAME found"
+			printf "\n$0: No such name $VM_NAME found\n\n"
 			exit
 		fi
 		if [[ $LINS -gt 1 ]]; then
-			echo "More names found, please be specific:"
-			cat $VM_LIST | awk {'print $2;'}|grep $NAME
+			printf "\n$0: More names like '$VM_NAME' found, please be specific:\n"
+			cat $VM_LIST | awk {'print $2;'}|grep "^$VM_NAME$"
+            printf "\n"
 			exit
 		fi
-		IFACE=`cat $VM_LIST | awk {'print $1" "$2;'}|grep $NAME|awk {'print $1;'}`
+		IFACE=`cat $VM_LIST | awk {'print $1" "$2;'}|grep " $VM_NAME$"|awk {'print $1;'}`
 	;;
 	'ip')
 		IP=$2
