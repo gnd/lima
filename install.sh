@@ -35,7 +35,7 @@ else
 fi
 
 # Install prerequisities
-apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system net-tools qemu-kvm sgabios
+apt-get install python git libvirt-clients libvirt-daemon libvirt-daemon-system net-tools qemu-kvm sgabios ebtables
 
 # Create directory structure
 echo "Creating directory structure:"

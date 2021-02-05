@@ -95,6 +95,7 @@ if [[ "$ANS" == "d" ]]; then
 	esac
 
 	# Create domain in apache conf
+	# // TODO remplace with mktemp everywhere
 	RND=`openssl rand -hex 2`
 	TMPFILE="/tmp/dmn_"$RND
 	touch $TMPFILE
