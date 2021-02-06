@@ -193,6 +193,7 @@ touch $ROOTDIR/pool/vms/static.allowed
 touch $ROOTDIR/pool/vms/dynamic.banned
 touch $ROOTDIR/pool/vms/proxies.conf
 touch $ROOTDIR/pool/vms/ssh-forwards
+touch $ROOTDIR/pool/vms/vmlist
 
 # Extending the firewall
 shopt -s extglob
