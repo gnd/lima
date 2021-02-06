@@ -219,8 +219,9 @@ VM_IP="10.10.$VM_SUBNET.$VM_INDEX"
 VM_GATEWAY="10.10.$VM_SUBNET.1"
 
 ### SED the parameters
-sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+sed -i "s/VM_DIR/$VM_DIR/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_TYPE/$VM_TYPE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
