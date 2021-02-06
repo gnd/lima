@@ -246,7 +246,7 @@ echo "$VM_IFACE $VM_NAME $VM_IP $VM_VNC $VM_TYPE_ABR $VM_PROXY" >> $VM_LIST
 
 ### Change VM parameters
 echo "Changing VM parameters .."
-ssh $DEFAULT_IP "sed -i 's/address.*/address $VM_IP/g' /etc/network/interfaces"
+ssh $DEFAULT_IP "sed -i 's/address.*/address $VM_IP\/24/g' /etc/network/interfaces"
 ssh $DEFAULT_IP "sed -i 's/gateway.*/gateway $VM_GATEWAY/g' /etc/network/interfaces"
 ssh $DEFAULT_IP "hostname '$VM_NAME'"
 ssh $DEFAULT_IP "echo '$VM_NAME' > /etc/hostname"

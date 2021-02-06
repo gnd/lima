@@ -111,3 +111,19 @@ virsh create $VM_DIR/default/$VM_NAME/vm.xml
 # Connect & install
 echo "Connect to the default VM $VM_NAME via VNC and finish the install."
 echo "Enable VNC like: 'enable-vnc def' and connect to $EXT_IP:11230"
+echo "Some notes on install:
+
+- Network settings:
+	ip: 10.10.10.10
+	netmask: 255.255.255.0
+	gateway: 10.10.10.1
+- Use all the available disk as one LVM2 partition
+- Do not install any X Server or any GUI
+- Do not install anything else during installation just SSH server
+
+After install finish the installation of the default-vm by:
+- fix sshd_config (allow root)
+- adding a host root ssh key to default-vm's /root/.ssh/authorized_keys
+- making sure ssh 10.10.10.10 runs OK from host
+- installing optional firewall, monitoring scripts, mrtg, etc..
+"
