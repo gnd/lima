@@ -251,7 +251,9 @@ ssh $DEFAULT_IP "sed -i 's/gateway.*/gateway $VM_GATEWAY/g' /etc/network/interfa
 ssh $DEFAULT_IP "hostname '$VM_NAME'"
 ssh $DEFAULT_IP "echo '$VM_NAME' > /etc/hostname"
 ssh $DEFAULT_IP "sed -i 's/$DEFAULT_IP.*/$VM_IP    $VM_NAME.$SERVER_FQDN/g' /etc/hosts"
+# one of these two is bound to fail, which is OK
 ssh $DEFAULT_IP "sed -i 's/default/$VM_NAME/g' /data/www/localhost/index.php"
+ssh $DEFAULT_IP "sed -i 's/default/$VM_NAME/g' /data/www/localhost/index.html"
 ssh $DEFAULT_IP "rm /root/.bash_history"
 
 ### Add a default user ?
