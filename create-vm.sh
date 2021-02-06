@@ -217,6 +217,7 @@ VM_MAC=`$SCRIPT_DIR"/macgen.py"`
 VM_IFACE="$VM_TYPE_ABR-$VM_SUBNET-$VM_INDEX"
 VM_IP="10.10.$VM_SUBNET.$VM_INDEX"
 VM_GATEWAY="10.10.$VM_SUBNET.1"
+VM_EXTIF="0.0.0.0"
 
 ### SED the parameters
 sed -i "s~VM_DIR~$VM_DIR~g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
@@ -225,6 +226,7 @@ sed -i "s/VM_NAME/$VM_NAME/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 # sed black magick (remove cdrom from the VM)
 sed -z 's/\(<disk type="file" device="cdrom">.*<\/disk>\)/<!-- \1 -->/g' -i $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 
