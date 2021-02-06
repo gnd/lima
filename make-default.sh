@@ -6,6 +6,11 @@
 #
 ####################################################################
 
+# Define globals
+source $LIMA_ROOT/vms/settings
+DEFAULT_SIZE=20						# Default size of the new disk image in GB
+ISO_DIR=$VM_DIR/iso					# Location where the installer .iso images should reside
+
 read -p "This is work in progress, proceed on your own risk [y/n]: " ANS
 if [[ ! $ANS == "y" ]]; then
 	exit
@@ -17,11 +22,6 @@ if [ -z $LIMA_ROOT ]; then
 	echo "Exiting. Reason: LIMA_ROOT not set."
 	exit
 fi
-
-# Define globals
-source $LIMA_ROOT/vms/settings
-DEFAULT_SIZE=10						# Default size of the new disk image in GB
-ISO_DIR=$VM_DIR/iso					# Location where the installer .iso images should reside
 
 # Check if we have some installers first
 read -p "Please type yes if $ISO_DIR exists and contains some .iso installers:"$'\n' ANSWER
