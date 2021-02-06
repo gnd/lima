@@ -149,7 +149,7 @@ if [[ ! -z $CHECK ]]; then
 		echo "Copying files .."
 		cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 		cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
-        fi
+    fi
 else
 	if [[ -d $VM_DIR/$VM_TYPE/$VM_NAME ]]; then
 		read -p "Directory $VM_DIR/$VM_TYPE/$VM_NAME exists, do you wish to overwrite? [y/n]: " ANS
@@ -224,6 +224,8 @@ sed -i "s/VM_TYPE/$VM_TYPE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_MAC/$VM_MAC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_IFACE/$VM_IFACE/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -i "s/VM_VNC/$VM_VNC/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+# sed black magick (remove cdrom from the VM)
+sed -z 's/\(<disk type="file" device="cdrom">.*<\/disk>\)/<!-- \1 -->/g' -i $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 
 ### Try spin up the new instance
 RES=`virsh create $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml 2>&1`
