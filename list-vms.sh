@@ -29,7 +29,7 @@ RND=`openssl rand -hex 2`
 TMPFILE="/tmp/lvm_"$RND
 touch $TMPFILE
 chmod 600 $TMPFILE
-echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Net,State,Location in /data/pool/vms,Backup" > $TMPFILE
+echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Net,State,Location in $LIMA_ROOT,Backup" > $TMPFILE
 for LINE in `cat $VM_LIST|grep -v dummy`
 do
 	# Parse VM data

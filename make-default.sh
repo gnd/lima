@@ -113,6 +113,7 @@ echo "Connect to the default VM $VM_NAME via VNC and finish the install."
 echo "Enable VNC like: 'enable-vnc def' and connect to $EXT_IP:11230"
 echo "Some notes on install:
 
+- Hostname *must be* set to 'default'
 - Network settings:
 	ip: 10.10.10.10
 	netmask: 255.255.255.0
