@@ -72,7 +72,7 @@ if [[ $ANS == "y" ]]; then
 	fi
 
 	# create conf file backup
-	tar -cf /data/backup/temp/conf_$DATUM.tar $ARGS
+	tar -cf $BUP_DIR"/temp/conf_"$DATUM".tar" $ARGS
 
 	# destroy from libvirtd
 	virsh destroy $VM_NAME
@@ -80,12 +80,12 @@ if [[ $ANS == "y" ]]; then
 	# remove from pool
 	if [[ $VM_TYPE == "dyn" ]]; then
 		echo "Deleting dynamic VM $VM_NAME from disk"
-		mv $VM_DIR/dynamic/$VM_NAME "/data/backup/temp/vms/dynamic/deleted_"$VM_NAME"_"$DATUM
+		mv $VM_DIR/dynamic/$VM_NAME $BUP_DIR"/temp/vms/dynamic/deleted_"$VM_NAME"_"$DATUM
 
 	fi
 	if [[ $VM_TYPE == "sta" ]]; then
 		echo "Deleting static VM $VM_NAME from disk"
-	        mv $VM_DIR/static/$VM_NAME "/data/backup/temp/vms/static/deleted_"$VM_NAME"_"$DATUM
+	        mv $VM_DIR/static/$VM_NAME $BUP_DIR"/temp/vms/static/deleted_"$VM_NAME"_"$DATUM
 	fi
 
 	# remove from firewalls
