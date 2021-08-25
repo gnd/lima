@@ -10,7 +10,7 @@
 usage() {
 	printf "\n"
 	printf "Usage: \n"
-	printf "$0 \n\n"
+	printf "$0 [-a]\n\n"
 }
 
 # Check for -a
