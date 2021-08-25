@@ -13,6 +13,17 @@ usage() {
 	printf "$0 \n\n"
 }
 
+# Check for -a
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -a)
+        SORT="| sort -k2"
+        echo "Sorting by VM name."
+      ;;
+  esac
+  shift
+done
+
 # Check if LIMA_ROOT set
 if [ -z $LIMA_ROOT ]; then
 	echo "Cant find LIMA. Please check if the install finished correctly."
@@ -30,7 +41,7 @@ TMPFILE="/tmp/lvm_"$RND
 touch $TMPFILE
 chmod 600 $TMPFILE
 echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Net,State,Location in $LIMA_ROOT,Backup" > $TMPFILE
-for LINE in `cat $VM_LIST|grep -v dummy`
+for LINE in `cat $VM_LIST|grep -v dummy $SORT`
 do
 	# Parse VM data
 	VM_IFACE=`echo $LINE|awk {'print $1;'}`
