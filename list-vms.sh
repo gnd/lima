@@ -6,6 +6,7 @@
 #       gnd @ gnd.sk, 2017 - 2019
 #
 ####################################################################
+SORT="sort"
 
 usage() {
 	printf "\n"
@@ -17,7 +18,7 @@ usage() {
 while [ $# -gt 0 ]; do
   case "$1" in
     -a)
-        SORT="| sort -k2"
+        SORT="sort -k2"
         echo "Sorting by VM name."
       ;;
   esac
@@ -41,7 +42,7 @@ TMPFILE="/tmp/lvm_"$RND
 touch $TMPFILE
 chmod 600 $TMPFILE
 echo -e "Name,Type,IP,Interface,VNC,SSH,URL,Net,State,Location in $LIMA_ROOT,Backup" > $TMPFILE
-for LINE in `cat $VM_LIST|grep -v dummy $SORT`
+for LINE in `cat $VM_LIST | grep -v dummy | $SORT`
 do
 	# Parse VM data
 	VM_IFACE=`echo $LINE|awk {'print $1;'}`
