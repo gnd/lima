@@ -104,9 +104,9 @@ if [[ "$VM_TYPE" == "dyn" ]]; then
 	VM_BRIDGE="dyn0"
 fi
 if [[ "$VM_TYPE" == "sta" ]]; then
-        VM_TYPE="static"
+    VM_TYPE="static"
 	VM_TYPE_ABR="sta"
-        VM_BRIDGE="sta0"
+    VM_BRIDGE="sta0"
 fi
 
 ### Ask for VM name
@@ -122,17 +122,10 @@ opts=`echo $vms|sed 's/ /|/g'`
 opts=`echo "+($opts)"`
 select vm in $vms
 do
-        case $vm in
-        $vms)
-                echo "Choosing: $vm"
-                break
-                ;;
-        *)
-                echo "Invalid: $vm"
-                ;;
-        esac
+	DEF_VM=$vm
+	break
 done
-DEF_VM=$vm
+
 
 ### Check if VM already exists
 CHECK=`virsh list --all|grep " $VM_NAME "`
