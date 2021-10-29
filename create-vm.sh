@@ -237,6 +237,7 @@ else
 fi
 
 ### Wait for the VM to come up
+$IPFW
 connect-ssh $DEFAULT_IP default
 
 ### Add index into vmlist
