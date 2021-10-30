@@ -39,7 +39,7 @@ case "$1" in
 			cat $VM_LIST | awk {'print $1;'}|grep $IFACE
 			exit
 		fi
-		IFACE=`cat $VM_LIST | awk {'print $1";'}|grep $IFACE`
+		IFACE=`cat $VM_LIST | awk {'print $1;'}|grep $IFACE`
 	;;
     'name')
 		VM_NAME=$2
