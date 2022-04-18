@@ -293,7 +293,7 @@ if [[ "$ANS" == "y" ]]; then
 	iptables -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:22
 	iptables -A FORWARD -p tcp -d $VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 	iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
-	echo "$VM_SUBNET$VM_INDEX $VM_IP ON" >> $VM_DIR/ssh-forwards
+	echo "$EXT_PORT $VM_IP ON" >> $VM_DIR/ssh-forwards
 	echo "Enabling external port $EXT_PORT forwarding to $VM_IP:22 .."
 	PORT_FWD_USED=1
 fi

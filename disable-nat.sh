@@ -10,16 +10,16 @@
 ####################################################################
 
 usage() {
-        printf "\n"
-        printf "Usage: \n"
-        printf "$0 <iface IFACE |name NAME |ip IP |def> \n\n"
+    printf "\n"
+    printf "Usage: \n"
+    printf "$0 <iface IFACE |name NAME |ip IP |def> \n\n"
 }
 
 # Check if LIMA_ROOT set
 if [ -z $LIMA_ROOT ]; then
-	echo "Cant find LIMA. Please check if the install finished correctly."
-	echo "Exiting. Reason: LIMA_ROOT not set."
-	exit
+  	echo "Cant find LIMA. Please check if the install finished correctly."
+  	echo "Exiting. Reason: LIMA_ROOT not set."
+  	exit
 fi
 
 # Define globals
