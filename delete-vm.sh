@@ -85,7 +85,7 @@ if [[ $ANS == "y" ]]; then
 	fi
 	if [[ $VM_TYPE == "sta" ]]; then
 		echo "Deleting static VM $VM_NAME from disk"
-	        mv $VM_DIR/static/$VM_NAME $BUP_DIR"/temp/vms/static/deleted_"$VM_NAME"_"$DATUM
+	  mv $VM_DIR/static/$VM_NAME $BUP_DIR"/temp/vms/static/deleted_"$VM_NAME"_"$DATUM
 	fi
 
 	# remove from firewalls
@@ -99,7 +99,7 @@ if [[ $ANS == "y" ]]; then
 
 	# remove from SSH forwards
 	if [[ -f $VM_DIR/ssh-forwards ]]; then
-		echo "Removing SSH forwards for VM $VM_NAME"
+		echo "Removing SSH forwards for VM $VM_NAME with IP $VM_IP"
 		sed -i "/$VM_IP/d" $VM_DIR/ssh-forwards
 		# Reload the system firewall
 		if [ ! -z $OSFW ]; then
