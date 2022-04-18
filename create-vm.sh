@@ -27,7 +27,7 @@ USER="livmusr"
 USER_USED=0
 PORT_FWD_USED=0
 VM_PROXY="none"
-SSH_OPTS="-o StrictHostKeyChecking=no"					# needed since we use several default VMs
+SSH_OPTS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"					# needed since we use several default VMs
 source $LIMA_ROOT/vms/settings
 
 ### If input arguments provided
@@ -59,7 +59,7 @@ connect-ssh() {
 	clean_line() { printf "\r"; }
 
 	while [[ "$con" == "0" ]]; do
-		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no $ip hostname`
+		check=`ssh -q -o ConnectTimeout=1 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $ip hostname`
 		sleep 1
 		if [[ ! "$check" == "$hostname" ]]; then
 			clean_line
