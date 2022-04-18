@@ -318,10 +318,6 @@ echo "---------------------------------------------------------------------"
 echo "$VM_NAME is ready locally at $VM_IP."
 echo "For VNC use ./enable-vnc.sh port $VM_VNC"
 if [[ $PORT_FWD_USED == "1" ]]; then
-	if [[ $USER_USED == "1" ]]; then
-		echo "For SSH from outside use 'ssh $EXT_IP -p $EXT_PORT -l $USER' (initial password is $PASS)"
-	else
 		echo "For SSH from outside use 'ssh $EXT_IP -p $EXT_PORT -l root' (you have to have a RSA key added to the VM)"
-	fi
 fi
 echo "---------------------------------------------------------------------"
