@@ -3,9 +3,11 @@
 # This installs the LIMA system.
 #
 #
-#       gnd @ gnd.sk, 2019
+#       gnd @ gnd.sk, 2019-2022
 #
 #######################################################################
+# TODO: incorporate this https://superuser.com/questions/298426/kvm-image-failed-to-start-with-virsh-permission-denied
+
 
 # Some globals
 WO=0					# Should we overwrite the directories when installing ?

@@ -125,7 +125,7 @@ do
 	DEF_VM=$vm
 	break
 done
-
+echo "Using $DEF_VM as default Vm."
 
 ### Check if VM already exists
 CHECK=`virsh list --all|grep " $VM_NAME "`
@@ -151,9 +151,9 @@ else
 			exit
 		fi
 		mkdir -p $VM_DIR/$VM_TYPE/$VM_NAME
-        echo "Copying files .."
-        cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
-    	cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
+    echo "Copying files .."
+    cp -pr $VM_DIR/default/$DEF_VM/default.xml $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
+    cp -pr $VM_DIR/default/$DEF_VM/disk-a.img $VM_DIR/$VM_TYPE/$VM_NAME/disk-a.img
 	else
 		echo "Creating directory $VM_DIR/$VM_TYPE/$VM_NAME"
 		mkdir $VM_DIR/$VM_TYPE/$VM_NAME
@@ -224,6 +224,8 @@ sed -i "s/VM_EXTIF/$VM_EXTIF/g" $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 sed -z 's/\(<disk type="file" device="cdrom">.*<\/disk>\)/<!-- \1 -->/g' -i $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml
 
 ### Try spin up the new instance
+# This command may fail, see this for solution:
+# https://superuser.com/questions/298426/kvm-image-failed-to-start-with-virsh-permission-denied
 RES=`virsh create $VM_DIR/$VM_TYPE/$VM_NAME/vm.xml 2>&1`
 if [[ $RES =~ "Failed" ]]; then
 	echo $RES
