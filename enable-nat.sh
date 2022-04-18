@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This creates a NAT masquearde for a VM on sta0 (static bridge)
+# This creates a NAT masquerade for a VM on sta0 (static bridge)
 #	or re-enables a dynamic VM to access Internet
 #
 # 	static VM's should not have a outbound connection by default.
