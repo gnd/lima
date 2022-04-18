@@ -129,8 +129,10 @@ export LIMA_ROOT=$ROOTDIR/pool
 ### Lima aliases
 alias add-apache-vhost='$ROOTDIR/pool/add-apache-vhost.sh'
 alias create-vm='$ROOTDIR/pool/create-vm.sh'
-alias disable-nat='$ROOTDIR/pool/disable-nat.sh'
 alias enable-nat='$ROOTDIR/pool/enable-nat.sh'
+alias disable-nat='$ROOTDIR/pool/disable-nat.sh'
+alias enable-ssh='$ROOTDIR/pool/enable-ssh.sh'
+alias disable-ssh='$ROOTDIR/pool/disable-ssh.sh'
 alias enable-vnc='$ROOTDIR/pool/enable-vnc.sh'
 alias delete-vm='$ROOTDIR/pool/delete-vm.sh'
 alias lima='$ROOTDIR/pool/show-commands.sh'

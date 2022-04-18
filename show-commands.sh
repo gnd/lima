@@ -36,10 +36,16 @@ echo ""
 echo -e "\033[1mdelete-vm \033[0m- deletes a given VM from disk and removes it from the firewall and apache. Usage: delete-vm <name NAME>"
 echo ""
 
+echo -e "\033[1menable-nat \033[0m- enables internet connection for a given VM. Usage: enable-nat <iface IFACE |name NAME |ip IP>"
+echo ""
+
 echo -e "\033[1mdisable-nat \033[0m- disables internet connection for a given VM. Usage: disable-nat <iface IFACE |name NAME |ip IP>"
 echo ""
 
-echo -e "\033[1menable-nat \033[0m- enables internet connection for a given VM. Usage: enable-nat <iface IFACE |name NAME |ip IP>"
+echo -e "\033[1menable-ssh \033[0m- enables SSH forwarding for a given VM. Usage: enable-ssh <iface IFACE |name NAME |ip IP>"
+echo ""
+
+echo -e "\033[1mdisable-ssh \033[0m- disables SSH forwarding for a given VM. Usage: disable-ssh <iface IFACE |name NAME |ip IP>"
 echo ""
 
 echo -e "\033[1menable-vnc \033[0m- enables VNC connections from Internet for a given VM. Usage: enable-vnc <port PORT |name NAME |ip IP |iface IFACE>"
