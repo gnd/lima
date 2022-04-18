@@ -87,7 +87,7 @@ if [[ -f $VM_DIR/ssh-forwards ]]; then
 
     # Disable SSH forwarding
     echo "Disabling SSH forwarding to $VM_IP:22 .."
-    sed -i '/$VM_IP/d' $VM_DIR/ssh-forwards
+    sed -i "/.*$VM_IP.*/d" $VM_DIR/ssh-forwards
 
     # Reload the system firewall
     if [ ! -z $OSFW ]; then
