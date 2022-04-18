@@ -97,3 +97,8 @@ iptables -A FORWARD -p tcp -d $VM_IP --dport 22 -m state --state NEW,ESTABLISHED
 iptables -A INPUT -i $EXT_IF -p tcp -d $EXT_IP --dport $EXT_PORT -m state --state NEW -j ACCEPT
 echo "$EXT_PORT $VM_IP ON" >> $VM_DIR/ssh-forwards
 echo "Enabling external port $EXT_PORT forwarding to $VM_IP:22 .."
+
+### Notice
+echo "SSH forwarding to port $EXT_PORT enabled !"
+echo "For SSH from outside use 'ssh $EXT_IP -p $EXT_PORT -l root' (you have to have a SSH key added to the VM)"
+echo ""
