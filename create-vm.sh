@@ -257,22 +257,6 @@ ssh $DEFAULT_IP "sed -i 's/default/$VM_NAME/g' /data/www/localhost/index.php"
 ssh $DEFAULT_IP "sed -i 's/default/$VM_NAME/g' /data/www/localhost/index.html"
 ssh $DEFAULT_IP "rm /root/.bash_history"
 
-### Add a default user ?
-read -p "Add a default user ? [y/n]: " ANS
-if [[ "$ANS" == "y" ]]; then
-	RND=`openssl rand -hex 2`
-	PASS=`openssl rand -hex 8`
-	USER=$USER$RND
-	USERSTRING="AllowUsers root $USER"
-	echo "Adding default user .."
-	ssh $DEFAULT_IP "useradd -m -s /bin/bash $USER"
-	ssh $DEFAULT_IP "echo $USER:$PASS | chpasswd"
-	ssh $DEFAULT_IP "chage -d 0 $USER"
-	ssh $DEFAULT_IP "usermod -g sudo $USER"
-	ssh $DEFAULT_IP "sed -i 's/AllowUsers.*/$USERSTRING/g' /etc/ssh/sshd_config"
-	USER_USED=1
-fi
-
 ### Add a custom RSA / EC key
 read -p "Do you wish to add a specific RSA / EC pubkey to the VM ? [y/n]: " ANS
 if [[ "$ANS" == "y" ]]; then
