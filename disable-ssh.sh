@@ -53,7 +53,7 @@ case "$1" in
             exit
         fi
 
-        VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'} | grep "$VM_NAME$ " | awk {'print $2;'}`
+        VM_IP=`cat $VM_LIST | awk {'print $2" "$3;'} | grep "$VM_NAME " | awk {'print $2;'}`
     ;;
     'ip')
         IP=$2
