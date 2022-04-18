@@ -2,7 +2,7 @@
 #
 # This shows all available commands to control the VM pool
 #
-#       gnd @ gnd.sk, 2017 - 2019
+#       gnd @ gnd.sk, 2017 - 2022
 #
 ####################################################################
 clear
@@ -19,7 +19,7 @@ echo " \_______)(__\_|_)|___|\__/|___|(___/    \___)"
 echo ""
 echo "LIMA is a bunch of bash scripts used to easily create,"
 echo "modify and maintain KVM virtual machines using libvirt and virsh"
-echo "gnd@gnd.sk, 2017"
+echo "gnd@gnd.sk, 2017-2022"
 echo ""
 
 echo -e "\033[1mAvailable commands: \033[0m"
