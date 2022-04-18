@@ -84,7 +84,7 @@ EXT_PORT=$VM_SUBNET$VM_INDEX
 
 # Check if forwarding not already enabled
 if [[ -f $VM_DIR/ssh-forwards ]]; then
-    LINS=`cat $VM_DIR/ssh-forwards | awk {'print $3;'} | grep $VM_IP | wc -l`
+    LINS=`cat $VM_DIR/ssh-forwards | grep $VM_IP | wc -l`
     if [[ $LINS -gt 0 ]]; then
         echo "Forward for IP $VM_IP already existing."
         exit
