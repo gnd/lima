@@ -82,6 +82,15 @@ VM_SUBNET=`echo $IP | cut -d '.' -f 3`
 VM_INDEX=`echo $IP | cut -d '.' -f 4`
 EXT_PORT=$VM_SUBNET$VM_INDEX
 
+# Check if forwarding not already enabled
+if [[ -f $VM_DIR/ssh-forwards ]]; then
+    LINS=`cat $VM_DIR/ssh-forwards | awk {'print $3;'} | grep $IP | wc -l`
+    if [[ $LINS -gt 0 ]]; then
+        echo "Forward for IP $VM_IP already existing."
+        exit
+    fi
+fi
+
 # Enable SSH forwarding
 iptables -t nat -A PREROUTING -p tcp -i $EXT_IF --dport $EXT_PORT -j DNAT --to-destination $VM_IP:22
 iptables -A FORWARD -p tcp -d $VM_IP --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
