@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # ipgen.py script to generate a free IP address for LIMA guests
 import sys
 import random
@@ -29,4 +29,4 @@ def genIP(vmtype, vmlist):
 				return i
 				break
 
-print genIP(vmtype, vmlist)
+print(genIP(vmtype, vmlist))

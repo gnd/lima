@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # vncden.py script to find a free VNC port for LIMA guests
 import sys
 import random
@@ -30,4 +30,4 @@ def genVNC(vmlist):
 				return i
 				break
 
-print genVNC(vmlist)
+print(genVNC(vmlist))
