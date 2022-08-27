@@ -23,8 +23,14 @@ usage() {
         printf "$0 \n\n"
 }
 
+# Warn the user
+clear
+echo "This will stop all machines at once"
+echo "It might take a few minutes for all VMs to stop. Check list-vm to see what machines are still running"
+sleep 5
+
 ### Stop all running VMS from vmlist
 for VM_NAME in `cat $VM_LIST | awk {'print $2;'}`
 do
-    $SCRIPT_DIR/stop-vm.sh name $VM_NAME
+    $SCRIPT_DIR/stop-vm.sh name $VM_NAME &
 done
