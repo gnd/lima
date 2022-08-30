@@ -131,10 +131,15 @@ ssh $VM_IP "/root/nxtd"
 ssh $VM_IP "rm /root/nxtd"
 
 # The LVM batch part
+# get the name of the VG
+echo "Getting VG name for $VM_NAME"
+VG_NAME=`ssh $VM_IP vgs -o vg_name --noheadings|sed 's/ //g'`
+echo "Default VG name for $VM_NAME is $VG_NAME"
+
 echo "Extending the LVM"
 ssh $VM_IP "pvcreate /dev/vd"$NXT"1"
-ssh $VM_IP "vgextend def-vg /dev/vd"$NXT"1"
+ssh $VM_IP "vgextend $VG_NAME /dev/vd"$NXT"1"
 ssh $VM_IP "pvscan"
-ssh $VM_IP "lvextend /dev/def-vg/root /dev/vd"$NXT"1"
-ssh $VM_IP "resize2fs /dev/def-vg/root"
+ssh $VM_IP "lvextend /dev/$VG_NAME/root /dev/vd"$NXT"1"
+ssh $VM_IP "resize2fs /dev/$VG_NAME/root"
 #ssh $VM_IP "echo \"/dev/vd"$NXT"1\" >> /root/scripts/disks"
