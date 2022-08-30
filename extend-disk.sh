@@ -101,7 +101,7 @@ echo '</disk>' >> $TMPFILE
 
 echo "Modifying the VM definition file"
 # hardcoded for now ;/
-sed -i '0,/<disk type="file" device="disk">/s/<disk type="file" device="disk">/<disk type="file" device="disk">\n      <driver name="qemu" type="qcow2"\/>\n      <source file="\/data\/pool\/vms\/'$VM_TYPE'\/'$NAME'\/disk-'$NXT'.img"\/>\n      <target dev="vd'$NXT'" bus="virtio"\/>\n    <\/disk>\n    <disk type="file" device="disk">/g' $VM_XML
+sed -i '0,/<disk type="file" device="disk">/s/<disk type="file" device="disk">/<disk type="file" device="disk">\n      <driver name="qemu" type="qcow2"\/>\n      <source file="\/data\/pool\/vms\/'$VM_TYPE'\/'$VM_NAME'\/disk-'$NXT'.img"\/>\n      <target dev="vd'$NXT'" bus="virtio"\/>\n    <\/disk>\n    <disk type="file" device="disk">/g' $VM_XML
 
 # Adding the new disk to the machine
 virsh attach-device $VM_NAME $TMPFILE
