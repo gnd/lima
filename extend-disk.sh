@@ -63,8 +63,8 @@ fi
 if [[ $VM_TYPE == "dyn" ]]; then
 	VM_TYPE="dynamic"
 fi
-VM_XML=$VM_DIR"/"$VM_TYPE"/"$NAME"/vm.xml"
-VM_DIR=$VM_DIR"/"$VM_TYPE"/"$NAME
+VM_XML=$VM_DIR"/"$VM_TYPE"/"$VM_NAME"/vm.xml"
+VM_DIR=$VM_DIR"/"$VM_TYPE"/"$VM_NAME
 
 # Get current drive letter
 echo "Determining the current last drive letter"
@@ -104,7 +104,7 @@ echo "Modifying the VM definition file"
 sed -i '0,/<disk type="file" device="disk">/s/<disk type="file" device="disk">/<disk type="file" device="disk">\n      <driver name="qemu" type="qcow2"\/>\n      <source file="\/data\/pool\/vms\/'$VM_TYPE'\/'$NAME'\/disk-'$NXT'.img"\/>\n      <target dev="vd'$NXT'" bus="virtio"\/>\n    <\/disk>\n    <disk type="file" device="disk">/g' $VM_XML
 
 # Adding the new disk to the machine
-virsh attach-device $NAME $TMPFILE
+virsh attach-device $VM_NAME $TMPFILE
 rm $TMPFILE
 
 # The fdisk batch part
